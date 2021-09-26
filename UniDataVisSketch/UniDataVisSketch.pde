@@ -15,7 +15,13 @@ color btnCol = color(52, 53, 54);
 color btnToggledCol = color(38, 102, 102);
 
 //aesthetics
-Pavement pavement = new Pavement(); 
+Pavement pavement = new Pavement();
+
+//weather
+Weather weather = new Weather((int)random(1820), (int)random(400));
+Weather weather2 = new Weather((int)random(1820), (int)random(400));
+Weather weather3 = new Weather((int)random(1820), (int)random(200));
+Weather weather4 = new Weather((int)random(1820), (int)random(200));
 
 void setup() {
   // General Setup
@@ -48,6 +54,12 @@ void draw() {
   quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, 
     width, height, width, height-(2.3*floorHeight));
       pavement.drawPavement();
+      weather.cloudObject();
+      weather2.cloudObject();
+      weather3.cloudObject();
+      weather4.cloudObject();
+
+      
   // Building Silhouette (temporary, to be improved)
   fill(5);
   rect(leftGap-15, height-(13*floorHeight)-15, floorWidth+30, height, 2);

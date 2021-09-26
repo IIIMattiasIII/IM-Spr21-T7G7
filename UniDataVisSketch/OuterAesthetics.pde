@@ -7,7 +7,7 @@ class Pavement {
   //height = 980
   fill(57, 52, 52);
     strokeWeight(2);
-  //quad(leftGap+floorWidth, height-(1.3*floorHeight), leftGap+floorWidth, height-floorHeight/2, 1173, height-floorHeight/2, 1194, height-(1.3*floorHeight));
+  // below is all of the pavement quadrilaterals
   quad(width - floorHeight*8.57, height-(2.05*floorHeight), 1450, height-(2.15*floorHeight), width - floorHeight*6, height, 1150, height);
   fill(212, 212, 212);
   quad(width/1.494252874, height/1.175059952, width/1.58677448038, height, width/1.625, height, width/1.533277169, height/1.173652695);
