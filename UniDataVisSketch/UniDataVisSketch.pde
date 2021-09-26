@@ -1,7 +1,7 @@
 import controlP5.*;
 
 // Import related
-ControlP5 control;
+ControlP5 control; //test
 
 // Building Params
 Floor[] floors = new Floor[17];
