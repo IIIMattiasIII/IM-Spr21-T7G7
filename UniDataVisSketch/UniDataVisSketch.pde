@@ -1,7 +1,7 @@
 import controlP5.*;
 
 // Import related
-ControlP5 control; //test
+ControlP5 control; 
 
 // Building Params
 Floor[] floors = new Floor[17];
@@ -13,6 +13,9 @@ boolean floorViewTog = false;
 PFont btnFont;
 color btnCol = color(52, 53, 54);
 color btnToggledCol = color(38, 102, 102);
+
+//aesthetics
+Pavement pavement = new Pavement(); 
 
 void setup() {
   // General Setup
@@ -41,8 +44,10 @@ void draw() {
   strokeWeight(2);
   fill(77, 71, 66);
   rect(0, height-1, leftGap, height+1);
+  //road + pavement shapes
   quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, 
     width, height, width, height-(2.3*floorHeight));
+      pavement.drawPavement();
   // Building Silhouette (temporary, to be improved)
   fill(5);
   rect(leftGap-15, height-(13*floorHeight)-15, floorWidth+30, height, 2);
