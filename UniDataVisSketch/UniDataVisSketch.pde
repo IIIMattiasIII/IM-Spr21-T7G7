@@ -15,11 +15,16 @@ PFont buildingFont;
 color btnCol = color(52, 53, 54);
 color btnToggledCol = color(38, 102, 102);
 
+
+
 //weather
-Weather weather = new Weather((int)random(1820), (int)random(400));
-Weather weather2 = new Weather((int)random(1820), (int)random(400));
-Weather weather3 = new Weather((int)random(1820), (int)random(200));
-Weather weather4 = new Weather((int)random(1820), (int)random(200));
+//weather
+  Weather weather;
+  Weather weather2;
+  Weather weather3;
+  Weather weather4;
+  PShape cloud;
+
 
 // Other
 PShape building;
@@ -46,6 +51,13 @@ void setup() {
   building = createBuilding();
   buildingFont = createFont("Arial Bold", 96);
   //Font
+    //Clouds
+  cloud = createCloud();
+  weather = new Weather((int)random(width), (int)random(height/2), cloud);
+  weather2 = new Weather((int)random(width), (int)random(height/2), cloud);
+  weather3 = new Weather((int)random(width), (int)random(height/2), cloud);
+  weather4 = new Weather((int)random(width), (int)random(height/2), cloud);
+
   
 }
 
@@ -62,10 +74,11 @@ void draw() {
   quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, 
     width, height, width, height-(2.3*floorHeight));
       drawPavement();
-      weather.cloudObject();
-      weather2.cloudObject();
-      weather3.cloudObject();
-      weather4.cloudObject();
+      weather.draw();
+      weather2.draw();
+      weather3.draw();
+      weather4.draw();
+
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
   fill(255);
