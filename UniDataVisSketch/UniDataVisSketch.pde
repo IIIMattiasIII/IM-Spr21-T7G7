@@ -11,6 +11,7 @@ int leftGap = 150, floorWidth = 900, floorHeight = 70;
 Button floorViewBtn;
 boolean floorViewTog = false;
 PFont btnFont;
+PFont buildingFont;
 color btnCol = color(52, 53, 54);
 color btnToggledCol = color(38, 102, 102);
 
@@ -43,6 +44,9 @@ void setup() {
   }
   // Building
   building = createBuilding();
+  buildingFont = createFont("Arial Bold", 96);
+  //Font
+  
 }
 
 void draw() {
@@ -65,7 +69,7 @@ void draw() {
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
   fill(255);
-  textFont(createFont("Arial Bold", 96));
+  textFont(buildingFont);
   text("U T S", 780, 160);
   // Floors 
   if (floorViewTog) {
