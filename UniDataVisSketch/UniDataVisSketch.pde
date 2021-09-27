@@ -23,6 +23,9 @@ Weather weather2 = new Weather((int)random(1820), (int)random(400));
 Weather weather3 = new Weather((int)random(1820), (int)random(200));
 Weather weather4 = new Weather((int)random(1820), (int)random(200));
 
+// Other
+PShape building;
+
 void setup() {
   // General Setup
   size(1820, 980, P2D);
@@ -41,6 +44,8 @@ void setup() {
   for (int i = 0; i < 13; i++) {
     floors[i] = new Floor(i);
   }
+  // Building
+  building = createBuilding();
 }
 
 void draw() {
@@ -58,11 +63,11 @@ void draw() {
       weather2.cloudObject();
       weather3.cloudObject();
       weather4.cloudObject();
-
-      
-  // Building Silhouette (temporary, to be improved)
-  fill(5);
-  rect(leftGap-15, height-(13*floorHeight)-15, floorWidth+30, height, 2);
+  // Building (bit basic - might be worth improving/texturing)
+  shape(building, 0, 0);
+  fill(255);
+  textFont(createFont("Arial Bold", 96));
+  text("U T S", 780, 160);
   // Floors 
   if (floorViewTog) {
     for (Floor f : floors) {

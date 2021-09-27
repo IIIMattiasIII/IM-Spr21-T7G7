@@ -15,6 +15,7 @@ class Floor {
     int topLeftY = height - floorHeight*(floorNum+1); 
     rect(leftGap, topLeftY, floorWidth, floorHeight, 5);
     fill(0);
+    textFont(createFont("ProcessingSansPro-Semibold", 16)); 
     text("Floor "+floorNum, leftGap+10, topLeftY+20);
   }
 }
