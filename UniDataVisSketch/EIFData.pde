@@ -1,6 +1,10 @@
+Table tempTable;
+
 void updateTables() {
   // placeholer below - will need to add tables for the data we want to use 
   //table = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=weather&rSensor=IWS", "csv");
+  //floor 1 temp
+  tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor=ES_B_01_411_7E39&rSubSensor=TCA", "csv");
 }
 
 // May need to modify the following methods so that we can affect them by pressing buttons in the
@@ -29,7 +33,7 @@ String getPrevTime() {
   String min;
   int oldMin;
   if (minute()-10 < 0) {
-    oldMin = (minute()+14)%24;
+    oldMin = minute()+50;
     h--;
   }
   else {
