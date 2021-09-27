@@ -44,6 +44,8 @@ void setup() {
 }
 
 void draw() {
+  //read room 1 temp
+  displayTemp();
   // Sky
   background(135, 207, 235);
   // Ground
