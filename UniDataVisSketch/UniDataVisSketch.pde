@@ -14,9 +14,6 @@ PFont btnFont;
 color btnCol = color(52, 53, 54);
 color btnToggledCol = color(38, 102, 102);
 
-//aesthetics
-Pavement pavement = new Pavement();
-
 //weather
 Weather weather = new Weather((int)random(1820), (int)random(400));
 Weather weather2 = new Weather((int)random(1820), (int)random(400));
@@ -58,7 +55,7 @@ void draw() {
   //road + pavement shapes
   quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, 
     width, height, width, height-(2.3*floorHeight));
-      pavement.drawPavement();
+      drawPavement();
       weather.cloudObject();
       weather2.cloudObject();
       weather3.cloudObject();

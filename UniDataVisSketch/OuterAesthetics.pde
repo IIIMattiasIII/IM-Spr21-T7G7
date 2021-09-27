@@ -53,9 +53,6 @@ PShape createBuilding() {
   return building;
 }
 
-class Pavement {
-
-  int leftGap = 150, floorWidth = 900, floorHeight = 70;
   void drawPavement() {
   //width = 1820
   //height = 980
@@ -68,5 +65,4 @@ class Pavement {
   quad(width/1820*1449, height/980*827, width/1820*1400, height, width/1820*1431, height, width/1820*1480, height/980*826);
   //fill(75, 236, 80);
   //quad(1480, 827, 1469, 856, 1818, 853, 1818, 818);
-  }
 }
