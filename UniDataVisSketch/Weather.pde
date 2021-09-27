@@ -1,28 +1,46 @@
 class Weather {
-  float a = 1820, b, c, d, x, y, angle;
+  //float a = 1820, b, c, d, x, y, angle;
+  float x, y;
+  PShape cloud;
 
-  Weather(int x, int y) {
-  
-    a = x;
-    b = y;
-  
+  Weather(int x, int y, PShape c) {
+    
+    this.x = x;
+    this.y = y;
+    cloud = c;
+ 
   }
-  void cloudObject(){ //creates the objects for the clouds
-  noStroke();
-  a = a - 1;
-  if(a < 1) a = 1820;
+  void draw(){ //creates the objects for the clouds
+  x = x - 1;
+  if(x < -cloud.getWidth()) x = width;
 
   fill(#FFFFFF);
-  ellipse ((a+1510)%width, b+25, c+40, d+30);
-  ellipse ((a+1460)%width, b+15, c+40, d+30);
-  ellipse ((a+1480)%width, b+25, c+40, d+30);
-  ellipse ((a+1470)%width, b+5, c+40, d+30);
-  ellipse ((a+1510)%width, b+5, c+40, d+30);
-  ellipse ((a+1490)%width, b+0, c+40, d+30);
-    stroke(1.0);
+shape(cloud, x, y);
 }
 
 float speed = 1.0;  
   
 
+  
+
 }
+
+  PShape createCloud() {
+  
+  PShape clouds = createShape(GROUP);
+  PShape cloud1 = createShape(ELLIPSE,50, 25 , 40, 30);
+  PShape cloud2 = createShape(ELLIPSE, 0, 15 , 40, 30);
+  PShape cloud3 = createShape(ELLIPSE, 20, 25 , 40, 30);
+  PShape cloud4 = createShape(ELLIPSE, 10, 5 , 40, 30);
+  PShape cloud5 = createShape(ELLIPSE, 50, 5 , 40, 30);
+  PShape cloud6 = createShape(ELLIPSE, 30, 0 , 40, 30);
+  clouds.addChild(cloud1);
+  clouds.addChild(cloud2);
+  clouds.addChild(cloud3);
+  clouds.addChild(cloud4);
+  clouds.addChild(cloud5);
+  clouds.addChild(cloud6);
+  clouds.setStroke(false);
+  return clouds;
+  
+  }
