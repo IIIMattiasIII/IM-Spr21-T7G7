@@ -74,7 +74,11 @@ void draw() {
   // Floors 
   if (floorViewTog) {
     for (Floor f : floors) {
-      if (f != null) { f.drawFloor(); }
+      //f.updateFloor();
+      // ^^currently commented out as it is arbitrary due to lack of data and elements on the floors
+      if (f != null) {
+        f.drawFloor();
+      }
     }
   }
 }
