@@ -54,7 +54,7 @@ class Floor {
 
 void floorTemp(){
   pg.beginDraw();
-  float m = map(temp,13,27,-255,255);
+  float m = map(temp,10,30,-255,255);
   if (m < 0)
   {
     ;
