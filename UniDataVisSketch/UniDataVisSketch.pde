@@ -20,12 +20,8 @@ String[] sensors = {"ES_B_01_411_7E39","ES_B_01_411_7E39","ES_B_01_411_7E39","ES
 
 
 //weather
-//weather
   Weather weather;
-  Weather weather2;
-  Weather weather3;
-  Weather weather4;
-  PShape cloud;
+
 
 
 // Other
@@ -55,11 +51,8 @@ void setup() {
   buildingFont = createFont("Arial Bold", 96);
   //Font
     //Clouds
-  cloud = createCloud();
-  weather = new Weather((int)random(width), (int)random(height/2), cloud);
-  weather2 = new Weather((int)random(width), (int)random(height/2), cloud);
-  weather3 = new Weather((int)random(width), (int)random(height/2), cloud);
-  weather4 = new Weather((int)random(width), (int)random(height/2), cloud);
+  weather = new Weather();
+
 
   
 }
@@ -76,9 +69,6 @@ void draw() {
     width, height, width, height-(2.3*floorHeight));
       drawPavement();
       weather.draw();
-      weather2.draw();
-      weather3.draw();
-      weather4.draw();
 
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
