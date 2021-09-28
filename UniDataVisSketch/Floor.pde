@@ -6,6 +6,8 @@ class Floor {
   PGraphics pg; // the PGraphics is the 'stage'/'view' for the floor
   Table tempTbl;
   Particle[] particles = new Particle[10];
+  // Interaction
+  boolean mouseHover = false;
 
   Floor(int floorNum) {
     this.floorNum = floorNum;
@@ -46,7 +48,8 @@ class Floor {
    */
   void createFloor() {
     pg.beginDraw();
-    pg.stroke(0);
+    if (mouseHover) { pg.stroke(255,0,0); } // Probably not final - just used to test mouseHover
+    else { pg.stroke(0); }
     pg.strokeWeight(1);
     pg.fill(255);
     pg.rect(0, 0, floorWidth, floorHeight, 5);

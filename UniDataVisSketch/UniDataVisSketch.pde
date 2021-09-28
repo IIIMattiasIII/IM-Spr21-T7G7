@@ -44,9 +44,8 @@ void setup() {
   }
   // Building
   building = createBuilding();
-  buildingFont = createFont("Arial Bold", 96);
   //Font
-  
+  buildingFont = createFont("Arial Bold", 96);
 }
 
 void draw() {
@@ -59,11 +58,11 @@ void draw() {
   //road + pavement shapes
   quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, 
     width, height, width, height-(2.3*floorHeight));
-      drawPavement();
-      weather.cloudObject();
-      weather2.cloudObject();
-      weather3.cloudObject();
-      weather4.cloudObject();
+  drawPavement();
+  weather.cloudObject();
+  weather2.cloudObject();
+  weather3.cloudObject();
+  weather4.cloudObject();
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
   fill(255);
@@ -73,10 +72,23 @@ void draw() {
   if (floorViewTog) {
     for (Floor f : floors) {
       if (f != null) {
+        checkFloorHover(f);
         f.drawFloor();
         f.updateFloor();
       }
     }
+  }
+}
+
+void checkFloorHover(Floor f) {
+  if (mouseX > leftGap && mouseX < leftGap+floorWidth) {
+    if (mouseY > f.topY && mouseY < f.topY+floorHeight) { 
+      f.mouseHover = true;
+    } else { 
+      f.mouseHover = false;
+    }
+  } else {
+    f.mouseHover = false;
   }
 }
 
