@@ -1,10 +1,17 @@
-Table tempTable;
+Table tempF1;
+//2 and 3 dont have wasps, might just use room adjacent for floors with missing sensors
+Table tempF4;
+Table tempF5;
+
+//only done 3 for now, would prefer a way that doesnt need a full page off this ^v but could take a lot longer to program vs just doing this as was names are unique
 
 void updateTables() {
   // placeholer below - will need to add tables for the data we want to use 
   //table = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=weather&rSensor=IWS", "csv");
   //floor 1 temp
-  tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor=ES_B_01_411_7E39&rSubSensor=TCA", "csv");
+  tempF1 = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor=ES_B_01_411_7E39&rSubSensor=TCA", "csv");
+  tempF4 = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor=ES_B_04_415_7BD1&rSubSensor=TCA", "csv");
+  tempF5 = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor=ES_B_05_416_7C15&rSubSensor=TCA", "csv");
 }
 
 // May need to modify the following methods so that we can affect them by pressing buttons in the
@@ -32,14 +39,14 @@ String getPrevTime() {
   int h = hour();
   String min;
   int oldMin;
-  if (minute()-10 < 0) {
-    oldMin = minute()+50;
+  if (minute()-30 < 0) {
+    oldMin = minute()+30;
     h--;
   }
   else {
-    oldMin = minute()-10;
+    oldMin = minute()-30;
   }
-  if (oldMin<10) { 
+  if (oldMin<30) { 
     min = "0"+oldMin;
   } else {
     min = ""+oldMin;
