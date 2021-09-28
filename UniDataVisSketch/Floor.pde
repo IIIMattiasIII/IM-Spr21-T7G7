@@ -54,10 +54,21 @@ class Floor {
 
 void floorTemp(){
   pg.beginDraw();
-  //pg.rect(pg.width/2,pg.height/2,10,10);
+  float m = map(temp,13,27,-255,255);
+  if (m < 0)
+  {
+    ;
+    pg.fill(map(int(m)*-1,1,255,255,1),map(int(m)*-1,1,255,255,1),255);
+    pg.rect(0, 0, floorWidth, floorHeight, 5);
+  }
+  else if (m >= 0)
+  {
+    pg.fill(255,map(int(m),0,255,255,0),map(int(m),0,255,255,0));
+    pg.rect(0, 0, floorWidth, floorHeight, 5);
+  }
+  pg.fill(0);
   pg.text(temp,pg.width/2,pg.height/2);
-  
-  pg.endDraw();
+  pg.endDraw();  
 }
 
 //TEMPERATURE END
