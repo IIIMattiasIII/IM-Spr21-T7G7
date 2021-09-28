@@ -1,18 +1,31 @@
 class Floor {
+  // Dimensional
   int floorNum;
+  int topY;
+  // Visuals and Data
   PGraphics pg; // the PGraphics is the 'stage'/'view' for the floor
+  Table tempTbl;
+  Particle[] particles = new Particle[10];
 
-  public Floor(int floorNum) {
+  Floor(int floorNum) {
     this.floorNum = floorNum;
+    topY = height - floorHeight*(floorNum+1);
     pg = createGraphics(floorWidth+1, floorHeight);
     createFloor();
+    setTables();
+    for (int i = 0; i < particles.length; i++) {
+      particles[i] = new Particle(this); 
+    }
+  }
+  
+  void setTables() {
+    //
   }
 
   /*
    *  Draws the PGraphic for the floor in the correct positions based on its floor number
    */
   void drawFloor() {
-    int topY = height - floorHeight*(floorNum+1);
     image(pg, leftGap, topY);
   }
   
@@ -20,9 +33,12 @@ class Floor {
    *  Updates the floor and data elements/representations on the floor
    */
   void updateFloor() {
-    // call data elements that will be changing - will need a createFloor() call at the beginning as the 
-    // 'background' of the floor for the draw loop
-    floorTemp();
+    createFloor();
+    //floorTemp();
+    for (Particle p : particles) {
+      p.update();
+      p.display();
+    }
   }
   
   /*
