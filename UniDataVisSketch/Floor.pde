@@ -1,11 +1,13 @@
 class Floor {
   int floorNum;
   PGraphics pg; // the PGraphics is the 'stage'/'view' for the floor
+  float temp;
 
   public Floor(int floorNum) {
     this.floorNum = floorNum;
     pg = createGraphics(floorWidth+1, floorHeight);
     createFloor();
+    setupTables();
   }
 
   /*
@@ -40,12 +42,20 @@ class Floor {
     pg.endDraw();
   }
   
+  void setupTables(){
+    //setup temp
+    Table table = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
+    temp = table.getFloat(table.getRowCount()-1,1);
+    //setup airquality
+    //setup etc
+  }
+  
 // TEMPERATURE START
 
 void floorTemp(){
   pg.beginDraw();
   //pg.rect(pg.width/2,pg.height/2,10,10);
-  pg.text(tempF1.getFloat(tempF1.getRowCount()-1,1),pg.width/2,pg.height/2);
+  pg.text(temp,pg.width/2,pg.height/2);
   
   pg.endDraw();
 }

@@ -15,6 +15,8 @@ PFont buildingFont;
 color btnCol = color(52, 53, 54);
 color btnToggledCol = color(38, 102, 102);
 
+//Sensor array
+String[] sensors = {"ES_B_01_411_7E39","ES_B_01_411_7E39","ES_B_01_411_7E39","ES_B_04_415_7BD1","ES_B_04_415_7BD1","ES_B_05_416_7C15","ES_B_06_418_7BED","ES_B_07_420_7E1D","ES_B_08_422_7BDC","ES_B_09_425_3E8D","ES_B_09_425_3E8D","ES_B_11_428_3EA4","ES_B_12_431_7BC2"};
 
 
 //weather
@@ -30,6 +32,7 @@ color btnToggledCol = color(38, 102, 102);
 PShape building;
 
 void setup() {
+  //Setup Sensor Array
   // General Setup
   size(1820, 980, P2D);
   frameRate(60);
