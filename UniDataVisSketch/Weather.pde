@@ -1,13 +1,16 @@
 class Weather {
-  //float a = 1820, b, c, d, x, y, angle;
-  float[] x = new float[4], y = new float[4];
+  static final int NUM_CLOUDS = 8; 
+  float[] x = new float[NUM_CLOUDS], y = new float[NUM_CLOUDS];
+  float sun_x, sun_y;
   PShape cloud;
+  PShape sun;
   float speed = -1.0;  
 
   Weather() {
 
     this.cloud = createCloud();
-    for (int i = 0; i < 4; i++) {
+    this.sun = createSun();
+    for (int i = 0; i < NUM_CLOUDS; i++) {
 
       x[i] = random(width);
       y[i] = random(height/2);
@@ -15,9 +18,13 @@ class Weather {
   }
 
   void draw() { //creates the objects for the clouds
+    
+        sun_x += speed;
+        if (sun_x < -sun.getWidth()) sun_x = width;
+    shape(sun, sun_x, sun_y);
 
-    fill(#FFFFFF);
-    for (int i = 0; i < 4; i++) {
+    
+    for (int i = 0; i < NUM_CLOUDS; i++) {
 
       x[i] += speed;
       if (x[i] < -cloud.getWidth()) x[i] = width;
@@ -42,5 +49,18 @@ PShape createCloud() {
   clouds.addChild(cloud5);
   clouds.addChild(cloud6);
   clouds.setStroke(false);
+  clouds.setFill(#FFFFFF);
   return clouds;
+}
+
+PShape createSun() {
+
+  //PShape sun = createShape(GROUP);
+  PShape sun = createShape(ELLIPSE, 0, 40, 50, 50);
+  //PShape sun2 = createShape(TRIANGLE, 60, 20, 40, 0, 40, 20);
+  //sun.addChild(sun1);
+  //sun.addChild(sun2);
+  sun.setFill(#FFA500);
+  sun.setStroke(false);
+  return sun;
 }

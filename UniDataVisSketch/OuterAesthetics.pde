@@ -54,8 +54,7 @@ PShape createBuilding() {
 }
 
   void drawPavement() {
-  //width = 1820
-  //height = 980
+
   fill(57, 52, 52);
     strokeWeight(2);
   // below is all of the pavement quadrilaterals
@@ -63,6 +62,4 @@ PShape createBuilding() {
   fill(212, 212, 212);
   quad(width/1.494252874, height/1.175059952, width/1.58677448038, height, width/1.625, height, width/1.533277169, height/1.173652695);
   quad(width/1820*1449, height/980*827, width/1820*1400, height, width/1820*1431, height, width/1820*1480, height/980*826);
-  //fill(75, 236, 80);
-  //quad(1480, 827, 1469, 856, 1818, 853, 1818, 818);
 }
