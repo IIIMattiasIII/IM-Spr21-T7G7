@@ -50,8 +50,6 @@ void setup() {
 }
 
 void draw() {
-  //read room 1 temp
-  displayTemp();
   // Sky
   background(135, 207, 235);
   // Ground
@@ -74,10 +72,9 @@ void draw() {
   // Floors 
   if (floorViewTog) {
     for (Floor f : floors) {
-      //f.updateFloor();
-      // ^^currently commented out as it is arbitrary due to lack of data and elements on the floors
       if (f != null) {
         f.drawFloor();
+        f.updateFloor();
       }
     }
   }
