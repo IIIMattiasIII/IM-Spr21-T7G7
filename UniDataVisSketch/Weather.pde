@@ -5,6 +5,9 @@ class Weather {
   PShape cloud;
   PShape sun;
   float speed = -1.0;  
+  color noon = color(135, 207, 235);
+  color night = color(15, 44, 64);
+  float time = 0;
 
   Weather() {
 
@@ -19,17 +22,26 @@ class Weather {
 
   void draw() { //creates the objects for the clouds
     
-        sun_x += speed;
-        if (sun_x < -sun.getWidth()) sun_x = width;
+    time+= 0.002;
+    time%= 2;
+    
+    color sky = lerpColor(noon, night, abs(time-1));
+    background(sky);
+
+    sun_x += speed;
+    if (sun_x < -sun.getWidth()) sun_x = width;
     shape(sun, sun_x, sun_y);
 
-    
+
     for (int i = 0; i < NUM_CLOUDS; i++) {
 
       x[i] += speed;
       if (x[i] < -cloud.getWidth()) x[i] = width;
       shape(cloud, x[i], y[i]);
     }
+    
+    
+    
   }
 }
 
