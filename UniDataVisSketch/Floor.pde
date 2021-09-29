@@ -1,7 +1,8 @@
 class Floor {
   int floorNum;
   PGraphics pg; // the PGraphics is the 'stage'/'view' for the floor
-  float temp;
+  float temp; //each floors temp
+  float hum; //each floors humidity
 
   public Floor(int floorNum) {
     this.floorNum = floorNum;
@@ -44,10 +45,12 @@ class Floor {
   
   void setupTables(){
     //setup temp
-    Table table = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
-    temp = table.getFloat(table.getRowCount()-1,1);
+    Table tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
+    temp = tempTable.getFloat(tempTable.getRowCount()-1,1);
     //setup airquality
-    //setup etc
+    //setup humidity
+    Table humTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=HUMA", "csv");
+    hum = humTable.getFloat(humTable.getRowCount()-1,1);
   }
   
 // TEMPERATURE START
