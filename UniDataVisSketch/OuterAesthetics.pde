@@ -53,7 +53,7 @@ PShape createBuilding() {
   return building;
 }
 
-  void drawPavement() {
+void drawPavement() {
 
   fill(57, 52, 52);
     strokeWeight(2);

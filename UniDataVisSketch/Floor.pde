@@ -7,7 +7,7 @@ class Floor {
   public Floor(int floorNum) {
     this.floorNum = floorNum;
     pg = createGraphics(floorWidth+1, floorHeight);
-    createFloor();
+    updateFloor();
     setupTables();
   }
 
@@ -23,58 +23,70 @@ class Floor {
    *  Updates the floor and data elements/representations on the floor
    */
   void updateFloor() {
-    // call data elements that will be changing - will need a createFloor() call at the beginning as the 
-    // 'background' of the floor for the draw loop
-    floorTemp();
-  }
-  
-  /*
-   *  Creates inital 'image' of the floor and any non-moving elements (the background)
-   */
-  void createFloor() {
     pg.beginDraw();
-    pg.stroke(0);
-    pg.strokeWeight(1);
-    pg.fill(255);
-    pg.rect(0, 0, floorWidth, floorHeight, 5);
+    pg.clear();
+    floorTemp();
+    floorOverlay();
+    pg.endDraw();
+  }
+
+  /*
+   *  Adds floor name and additional static elements that appear 'on top' of the floor
+   */
+  void floorOverlay() {
     pg.fill(0);
     pg.textSize(16); 
     pg.text("Floor "+floorNum, 10, 20);
-    pg.endDraw();
   }
-  
-  void setupTables(){
+
+  void setupTables() {
     //setup temp
     Table tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
-    temp = tempTable.getFloat(tempTable.getRowCount()-1,1);
+    temp = tempTable.getFloat(tempTable.getRowCount()-1, 1);
     //setup airquality
     //setup humidity
     Table humTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=HUMA", "csv");
-    hum = humTable.getFloat(humTable.getRowCount()-1,1);
+    hum = humTable.getFloat(humTable.getRowCount()-1, 1);
   }
-  
-// TEMPERATURE START
 
-void floorTemp(){
-  pg.beginDraw();
-  float m = map(temp,10,30,-255,255);
-  if (m < 0)
-  {
-    ;
-    pg.fill(map(int(m)*-1,1,255,255,1),map(int(m)*-1,1,255,255,1),255);
-    pg.rect(0, 0, floorWidth, floorHeight, 5);
+  // TEMPERATURE START
+
+  void floorTemp() {
+    int opac = int(map(hum, 50, 90, 250, 190));  // HUMIDITY visibility through TEMP opacity
+    float m = map(temp, 10, 30, -255, 255);
+    if (m < 0) {
+      pg.fill(map(int(m)*-1, 1, 255, 255, 1), map(int(m)*-1, 1, 255, 255, 1), 255, opac);
+      pg.rect(0, 0, floorWidth, floorHeight);
+    } else if (m >= 0) {
+      pg.fill(255, map(int(m), 0, 255, 255, 0), map(int(m), 0, 255, 255, 0), opac);
+      pg.rect(0, 0, floorWidth, floorHeight);
+    }
+    pg.fill(0);
+    //pg.text(temp,pg.width/2,pg.height/2);
   }
-  else if (m >= 0)
-  {
-    pg.fill(255,map(int(m),0,255,255,0),map(int(m),0,255,255,0));
-    pg.rect(0, 0, floorWidth, floorHeight, 5);
+
+  //TEMPERATURE END
+} // END FLOOR CLASS
+
+
+//HUMIDITY START
+
+void createHumidNoise() {
+  humNoiseG.beginDraw();
+  humNoiseG.loadPixels();
+  float xoff = 0.0;
+  noiseDetail(8, 0.5);
+  for (int x = 0; x < humNoiseG.width; x++) {
+    xoff += 0.03;
+    float yoff = 0.0;
+    for (int y = 0; y < humNoiseG.height; y++) {
+      yoff += 0.03;
+      float bright = noise(xoff, yoff) * 255;
+      humNoiseG.pixels[x+y*humNoiseG.width] = color(bright);
+    }
   }
-  pg.fill(0);
-  //pg.text(temp,pg.width/2,pg.height/2);
-  pg.textSize(16); 
-  pg.text("Floor "+floorNum, 10, 20);
-  pg.endDraw();  
+  humNoiseG.updatePixels();
+  humNoiseG.endDraw();
 }
 
-//TEMPERATURE END
-}
+//HUMIDITY END

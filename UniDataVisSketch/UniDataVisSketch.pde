@@ -5,6 +5,7 @@ ControlP5 control;
 
 // Building Params
 Floor[] floors = new Floor[17];
+PGraphics humNoiseG;
 int leftGap = 150, floorWidth = 900, floorHeight = 70;
 
 // InputCluster
@@ -43,10 +44,12 @@ void setup() {
   for (int i = 0; i < 13; i++) {
     floors[i] = new Floor(i);
   }
+  humNoiseG = createGraphics(floorWidth, floorHeight*13);
+  createHumidNoise();
   // Building
   building = createBuilding();
-  buildingFont = createFont("Arial Bold", 96);
   //Font
+  buildingFont = createFont("Arial Bold", 96);
   //Weather
   weather = new Weather();
 }
@@ -58,28 +61,30 @@ void draw() {
   strokeWeight(2);
   fill(77, 71, 66);
   rect(0, height-1, leftGap, height+1);
+  quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, width, height, width, height-(2.3*floorHeight));
   //road + pavement shapes
-  quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, 
-    width, height, width, height-(2.3*floorHeight));
   drawPavement();
   weather.draw();
 
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
-  fill(255);
-  textFont(buildingFont);
-  text("U T S", 780, 160);
   // Floors 
   if (floorViewTog) {
+    image(humNoiseG, leftGap, height-floorHeight*13);
     for (Floor f : floors) {
       if (f != null) {
-        f.drawFloor();
         f.updateFloor();
+        f.drawFloor();
       }
     }
+  } else {
+    fill(255);
+    textFont(buildingFont);
+    text("U T S", 780, 160);
   }
 }
 
+// Used during testing. To be removed before final build release
 void mouseClicked() {
   println("Clicked: " + mouseX + ", " + mouseY);
 }
