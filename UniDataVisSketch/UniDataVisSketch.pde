@@ -44,6 +44,7 @@ void setup() {
   for (int i = 0; i < 13; i++) {
     floors[i] = new Floor(i);
   }
+  // Floor Background (Perlin Noise for Humidity Representation)
   humNoiseG = createGraphics(floorWidth, floorHeight*13);
   createHumidNoise();
   // Building

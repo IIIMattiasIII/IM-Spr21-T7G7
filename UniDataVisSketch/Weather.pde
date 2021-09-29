@@ -7,34 +7,27 @@ class Weather {
   float speed = -1.0;  
 
   Weather() {
-
     this.cloud = createCloud();
     this.sun = createSun();
     for (int i = 0; i < NUM_CLOUDS; i++) {
-
       x[i] = random(width);
       y[i] = random(height/2);
     }
   }
 
   void draw() { //creates the objects for the clouds
-    
-        sun_x += speed;
-        if (sun_x < -sun.getWidth()) sun_x = width;
+    sun_x += speed;
+    if (sun_x < -sun.getWidth()) { sun_x = width; }
     shape(sun, sun_x, sun_y);
-
-    
     for (int i = 0; i < NUM_CLOUDS; i++) {
-
       x[i] += speed;
-      if (x[i] < -cloud.getWidth()) x[i] = width;
+      if (x[i] < -cloud.getWidth()) { x[i] = width; }
       shape(cloud, x[i], y[i]);
     }
   }
 }
 
 PShape createCloud() {
-
   PShape clouds = createShape(GROUP);
   PShape cloud1 = createShape(ELLIPSE, 50, 25, 40, 30);
   PShape cloud2 = createShape(ELLIPSE, 0, 15, 40, 30);
@@ -54,7 +47,6 @@ PShape createCloud() {
 }
 
 PShape createSun() {
-
   //PShape sun = createShape(GROUP);
   PShape sun = createShape(ELLIPSE, 0, 40, 50, 50);
   //PShape sun2 = createShape(TRIANGLE, 60, 20, 40, 0, 40, 20);

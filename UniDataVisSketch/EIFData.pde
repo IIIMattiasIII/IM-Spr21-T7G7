@@ -1,12 +1,3 @@
-
-
-void updateTables() {
-  // placeholer below - will need to add tables for the data we want to use 
-  //table = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=weather&rSensor=IWS", "csv");
-  
-  //dont think we're using this anymore, see setupTables in Floor, much more compact per floor setup
-}
-
 // May need to modify the following methods so that we can affect them by pressing buttons in the
 // input cluster. Eg. getDate might need the day() to be changed to a built in selectedDay param
 // that we can set using using buttons (selectDay would = day()-dayModifier or something and
