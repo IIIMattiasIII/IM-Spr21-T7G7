@@ -43,6 +43,7 @@ class Floor {
     pg.endDraw();
   }
   
+  //grabs data needed and assigns to convienient variable
   void setupTables(){
     //setup temp
     Table tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
@@ -51,6 +52,7 @@ class Floor {
     //setup humidity
     Table humTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=HUMA", "csv");
     hum = humTable.getFloat(humTable.getRowCount()-1,1);
+    
   }
   
 // TEMPERATURE START

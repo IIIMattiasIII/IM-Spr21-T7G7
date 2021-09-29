@@ -49,6 +49,8 @@ void setup() {
   //Font
   //Weather
   weather = new Weather();
+  //people counter table setup
+  setupPeopleTable();
 }
 
 void draw() {
@@ -63,6 +65,7 @@ void draw() {
     width, height, width, height-(2.3*floorHeight));
   drawPavement();
   weather.draw();
+  peopleController();
 
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
