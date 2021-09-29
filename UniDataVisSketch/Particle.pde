@@ -28,7 +28,7 @@ class Particle {
   void display() {
     f.pg.beginDraw();
     f.pg.stroke(strokeCol);
-    f.pg.strokeWeight(1);
+    f.pg.strokeWeight(0.3);
     f.pg.fill(fillCol);
     f.pg.ellipse(position.x, position.y, diameter, diameter);
     f.pg.endDraw();

@@ -4,8 +4,8 @@ class Floor {
   int topY;
   // Visuals and Data
   PGraphics pg; // the PGraphics is the 'stage'/'view' for the floor
-  Table tempTbl;
-  Particle[] particles = new Particle[10];
+  int pollutants;
+  Particle[] particles;
   // Interaction
   boolean mouseHover = false;
 
@@ -15,13 +15,16 @@ class Floor {
     pg = createGraphics(floorWidth+1, floorHeight);
     createFloor();
     setTables();
+    particles = new Particle[pollutants];
     for (int i = 0; i < particles.length; i++) {
       particles[i] = new Particle(this); 
     }
   }
   
   void setTables() {
-    //
+    Table pollutantTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=AP2", "csv");
+    float value = pollutantTable.getFloat(pollutantTable.getRowCount()-1, 1);
+    pollutants = int(map(value, 0, 2.5, 1, 15));
   }
 
   /*
