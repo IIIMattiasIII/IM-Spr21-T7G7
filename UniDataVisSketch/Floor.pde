@@ -67,7 +67,7 @@ void floorTemp(){
     pg.rect(0, 0, floorWidth, floorHeight, 5);
   }
   pg.fill(0);
-  pg.text(temp,pg.width/2,pg.height/2);
+  //pg.text(temp,pg.width/2,pg.height/2);
   pg.textSize(16); 
   pg.text("Floor "+floorNum, 10, 20);
   pg.endDraw();  
