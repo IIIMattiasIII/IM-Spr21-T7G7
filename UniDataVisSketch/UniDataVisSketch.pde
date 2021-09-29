@@ -64,7 +64,6 @@ void draw() {
   //road + pavement shapes
   drawPavement();
   weather.draw();
-
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
   // Floors 
@@ -72,6 +71,7 @@ void draw() {
     image(humNoiseG, leftGap, height-floorHeight*13);
     for (Floor f : floors) {
       if (f != null) {
+        checkFloorHover(f);
         f.updateFloor();
         f.drawFloor();
       }
@@ -80,6 +80,18 @@ void draw() {
     fill(255);
     textFont(buildingFont);
     text("U T S", 780, 160);
+  }
+}
+
+void checkFloorHover(Floor f) {
+  if (mouseX > leftGap && mouseX < leftGap+floorWidth) {
+    if (mouseY > f.topY && mouseY < f.topY+floorHeight) { 
+      f.mouseHover = true;
+    } else { 
+      f.mouseHover = false;
+    }
+  } else {
+    f.mouseHover = false;
   }
 }
 

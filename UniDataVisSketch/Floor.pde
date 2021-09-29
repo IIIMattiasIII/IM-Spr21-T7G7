@@ -1,21 +1,36 @@
 class Floor {
+  // Dimensional
   int floorNum;
+  int topY;
+  // Visuals and Data
   PGraphics pg; // the PGraphics is the 'stage'/'view' for the floor
   float temp; //each floors temp
   float hum; //each floors humidity
+  int pollutants;
+  Particle[] particles;
+  // Interaction
+  boolean mouseHover = false;
 
-  public Floor(int floorNum) {
+  Floor(int floorNum) {
     this.floorNum = floorNum;
+    topY = height - floorHeight*(floorNum+1);
     pg = createGraphics(floorWidth+1, floorHeight);
     updateFloor();
     setupTables();
+    particles = new Particle[pollutants];
+    for (int i = 0; i < particles.length; i++) {
+      particles[i] = new Particle(this); 
+    }
+  }
+  
+  void setTables() {
+    
   }
 
   /*
    *  Draws the PGraphic for the floor in the correct positions based on its floor number
    */
   void drawFloor() {
-    int topY = height - floorHeight*(floorNum+1);
     image(pg, leftGap, topY);
   }
   
@@ -26,6 +41,10 @@ class Floor {
     pg.beginDraw();
     pg.clear();
     floorTemp();
+    for (Particle p : particles) {
+      p.update();
+      p.display();
+    }
     floorOverlay();
     pg.endDraw();
   }
@@ -44,6 +63,9 @@ class Floor {
     Table tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
     temp = tempTable.getFloat(tempTable.getRowCount()-1, 1);
     //setup airquality
+    Table pollutantTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=AP2", "csv");
+    float value = pollutantTable.getFloat(pollutantTable.getRowCount()-1, 1);
+    pollutants = int(map(value, 0, 2.5, 1, 15));
     //setup humidity
     Table humTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=HUMA", "csv");
     hum = humTable.getFloat(humTable.getRowCount()-1, 1);
@@ -54,6 +76,8 @@ class Floor {
   void floorTemp() {
     int opac = int(map(hum, 50, 90, 250, 190));  // HUMIDITY visibility through TEMP opacity
     float m = map(temp, 10, 30, -255, 255);
+    if (mouseHover) { pg.stroke(255,0,0); } // Probably not final - just used to test mouseHover
+    else { pg.stroke(0); }
     if (m < 0) {
       pg.fill(map(int(m)*-1, 1, 255, 255, 1), map(int(m)*-1, 1, 255, 255, 1), 255, opac);
       pg.rect(0, 0, floorWidth, floorHeight);
