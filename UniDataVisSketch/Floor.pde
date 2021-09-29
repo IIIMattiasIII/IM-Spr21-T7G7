@@ -15,16 +15,12 @@ class Floor {
     this.floorNum = floorNum;
     topY = height - floorHeight*(floorNum+1);
     pg = createGraphics(floorWidth+1, floorHeight);
-    updateFloor();
     setupTables();
     particles = new Particle[pollutants];
     for (int i = 0; i < particles.length; i++) {
-      particles[i] = new Particle(this); 
+      particles[i] = new Particle(this);
     }
-  }
-  
-  void setTables() {
-    
+    updateFloor();
   }
 
   /*
@@ -33,7 +29,7 @@ class Floor {
   void drawFloor() {
     image(pg, leftGap, topY);
   }
-  
+
   /*
    *  Updates the floor and data elements/representations on the floor
    */
@@ -58,6 +54,9 @@ class Floor {
     pg.text("Floor "+floorNum, 10, 20);
   }
 
+  /*
+   *  Creates tables for data points using the EIF API and sets the respective values
+   */
   void setupTables() {
     //setup temp
     Table tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
@@ -72,12 +71,15 @@ class Floor {
   }
 
   // TEMPERATURE START
-
   void floorTemp() {
     int opac = int(map(hum, 50, 90, 250, 190));  // HUMIDITY visibility through TEMP opacity
     float m = map(temp, 10, 30, -255, 255);
-    if (mouseHover) { pg.stroke(255,0,0); } // Probably not final - just used to test mouseHover
-    else { pg.stroke(0); }
+    if (mouseHover) { 
+      pg.strokeWeight(2);
+    } else { 
+      pg.strokeWeight(1);
+    }
+    pg.stroke(0);
     if (m < 0) {
       pg.fill(map(int(m)*-1, 1, 255, 255, 1), map(int(m)*-1, 1, 255, 255, 1), 255, opac);
       pg.rect(0, 0, floorWidth, floorHeight);
@@ -86,15 +88,13 @@ class Floor {
       pg.rect(0, 0, floorWidth, floorHeight);
     }
     pg.fill(0);
-    //pg.text(temp,pg.width/2,pg.height/2);
+    //pg.text(temp, pg.width/2, pg.height/2);
   }
-
   //TEMPERATURE END
 } // END FLOOR CLASS
 
 
 //HUMIDITY START
-
 void createHumidNoise() {
   humNoiseG.beginDraw();
   humNoiseG.loadPixels();
@@ -112,5 +112,4 @@ void createHumidNoise() {
   humNoiseG.updatePixels();
   humNoiseG.endDraw();
 }
-
 //HUMIDITY END

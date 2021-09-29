@@ -30,7 +30,7 @@ class Particle {
   }
   
   
-  // Slightly messy with if-elses instead of ORs but it more consistently overcomes particles being stuck on walls
+  // Slightly messy with if-elses instead of ORs but it more consistently overcomes particles being stuck on walls by allowing a reset of their position
   void checkBorder() {
     if (position.x < 0+(diameter/2)) {
       position.x = 0+(diameter/2);

@@ -54,7 +54,6 @@ PShape createBuilding() {
 }
 
 void drawPavement() {
-
   fill(57, 52, 52);
   strokeWeight(2);
   // below is all of the pavement quadrilaterals
