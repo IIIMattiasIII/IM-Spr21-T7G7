@@ -61,16 +61,4 @@ class Floor {
     pg.text("Floor "+floorNum, 10, 20);
     pg.endDraw();
   }
-  
-// TEMPERATURE START
-
-void floorTemp(){
-  pg.beginDraw();
-  //pg.rect(pg.width/2,pg.height/2,10,10);
-  pg.text(tempF1.getFloat(tempF1.getRowCount()-1,1),pg.width/2,pg.height/2);
-  
-  pg.endDraw();
-}
-
-//TEMPERATURE END
 }
