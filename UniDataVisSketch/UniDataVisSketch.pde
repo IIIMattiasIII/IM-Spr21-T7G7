@@ -34,8 +34,6 @@ void setup() {
   surface.setTitle("Data Visualisation of UTS Building 11");
   surface.setResizable(false);
   surface.setLocation(50, 10);
-  // EIF Data Integration
-  updateTables();
   // Input Cluster
   btnFont = createFont("Gadugi", 14);
   control = new ControlP5(this);
