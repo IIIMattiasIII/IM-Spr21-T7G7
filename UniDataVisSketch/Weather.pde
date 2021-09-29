@@ -8,7 +8,7 @@ class Weather {
   color noon = color(135, 207, 235);
   color night = color(15, 44, 64);
   float time = 0;
-
+  
   Weather() {
 
     this.cloud = createCloud();
@@ -22,8 +22,9 @@ class Weather {
 
   void draw() { //creates the objects for the clouds
     
-    time+= 0.002;
-    time%= 2;
+    //time+= 0.002;
+    //time%= 2;
+    time = (hour()*60+minute())/2400f;
     
     color sky = lerpColor(noon, night, abs(time-1));
     background(sky);
