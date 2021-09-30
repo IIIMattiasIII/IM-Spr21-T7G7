@@ -128,6 +128,15 @@ void pollutants() {
   pollutTog = !pollutTog;
 }
 
+void sound() {
+  if (soundTog) { 
+    soundBtn.setColorBackground(btnCol).setColorForeground(btnCol);
+  } else {
+    soundBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+  }
+  soundTog = !soundTog;
+}
+
 void incTime() {
   if (dayMod > 0) {
     modTime(1);
