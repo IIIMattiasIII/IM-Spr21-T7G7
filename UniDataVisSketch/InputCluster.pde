@@ -93,48 +93,58 @@ void setupInClust() {
 }
 
 void floorView() {
-  if (floorViewTog) { 
-    floorViewBtn.setColorBackground(btnCol).setColorForeground(btnCol);
-  } else {
-    floorViewBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+  if (frameCount>2) {
+    if (floorViewTog) { 
+      floorViewBtn.setColorBackground(btnCol).setColorForeground(btnCol);
+    } else {
+      floorViewBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+    }
+    floorViewTog = !floorViewTog;
   }
-  floorViewTog = !floorViewTog;
 }
 
 void temperature() {
-  if (tempTog) { 
-    tempBtn.setColorBackground(btnCol).setColorForeground(btnCol);
-  } else {
-    tempBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+  if (frameCount>2) {
+    if (tempTog) { 
+      tempBtn.setColorBackground(btnCol).setColorForeground(btnCol);
+    } else {
+      tempBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+    }
+    tempTog = !tempTog;
   }
-  tempTog = !tempTog;
 }
 
 void humidity() {
-  if (humTog) { 
-    humBtn.setColorBackground(btnCol).setColorForeground(btnCol);
-  } else {
-    humBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+  if (frameCount>2) {
+    if (humTog) { 
+      humBtn.setColorBackground(btnCol).setColorForeground(btnCol);
+    } else {
+      humBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+    }
+    humTog = !humTog;
   }
-  humTog = !humTog;
 }
 
 void pollutants() {
-  if (pollutTog) { 
-    pollutBtn.setColorBackground(btnCol).setColorForeground(btnCol);
-  } else {
-    pollutBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+  if (frameCount>2) {
+    if (pollutTog) { 
+      pollutBtn.setColorBackground(btnCol).setColorForeground(btnCol);
+    } else {
+      pollutBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+    }
+    pollutTog = !pollutTog;
   }
-  pollutTog = !pollutTog;
 }
 
 void sound() {
-  if (soundTog) { 
-    soundBtn.setColorBackground(btnCol).setColorForeground(btnCol);
-  } else {
-    soundBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+  if (frameCount>2) {
+    if (soundTog) { 
+      soundBtn.setColorBackground(btnCol).setColorForeground(btnCol);
+    } else {
+      soundBtn.setColorBackground(btnTogCol).setColorForeground(btnTogCol);
+    }
+    soundTog = !soundTog;
   }
-  soundTog = !soundTog;
 }
 
 void incTime() {
