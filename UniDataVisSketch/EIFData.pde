@@ -1,7 +1,3 @@
-// May need to modify the following methods so that we can affect them by pressing buttons in the
-// input cluster. Eg. getDate might need the day() to be changed to a built in selectedDay param
-// that we can set using using buttons (selectDay would = day()-dayModifier or something and
-// the buttons would increment or decrment the modifier)
 String getCurrTime() {
   String hour;
   if (hour()<10) { 
@@ -46,18 +42,72 @@ String getPrevTime() {
 }
 
 String getDate() {
-  String year = year()+"";
+  String year = this.year+"";
   String month;
-  if (month()<10) { 
-    month = "0"+month();
+  if (this.month<10) { 
+    month = "0"+this.month;
   } else {
-    month = ""+month();
+    month = ""+this.month;
   }
   String day;
-  if (day()<10) { 
-    day = "0"+day();
+  if (this.day<10) { 
+    day = "0"+this.day;
   } else {
-    day = ""+day();
+    day = ""+this.day;
   }
   return year+"-"+month+"-"+day;
+}
+
+// Feel like there's a better way to do this... This functions and it's the best I could think of for now though, so it'll do.
+// There's not really any protection for the year changes, so I don't think this will work for years far from now, but 
+//  the EIF Data probably won't be there anyway, so I'm not going to over-engineer it 
+void modTime(int t) {
+  if (t == -1) {
+    if (day == 1) {
+      if (month == 1) {
+          month = 12;
+          year--;
+      } else {
+          month--;
+      }
+      day = daysInMonth[month];
+    } else {
+      day--;
+    }
+  } else if (t == 1) {
+    if (day == daysInMonth[month]) {
+      if (month == 12) {
+          month = 1;
+          year++;
+      } else {
+          month++;
+      }
+      day = 1;
+    } else {
+      day++;
+    }
+  } else {
+    println("Invalid modTime parameter."); // Can probably delete this part. Used during testing
+  }
+}
+
+void refreshFloorData() {
+  //displayLoading(); // Loading call is not useful presently due to how Processing draws frames, will remain commented out until a solution is found
+  for (Floor f : floors) {
+    if (f!=null) {
+      f.setupData();
+      f.updateFloor();
+    }
+  }
+}
+
+void displayLoading() {
+  fill(255, 120);
+  rect(0, 0, width, height);
+  fill(0);
+  pushStyle();
+  textFont(buildingFont);
+  textAlign(CENTER);
+  text("Loading...", width/2, height/2);
+  popStyle();
 }

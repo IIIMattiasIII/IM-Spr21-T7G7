@@ -15,11 +15,7 @@ class Floor {
     this.floorNum = floorNum;
     topY = height - floorHeight*(floorNum+1);
     pg = createGraphics(floorWidth+1, floorHeight);
-    setupTables();
-    particles = new Particle[pollutants];
-    for (int i = 0; i < particles.length; i++) {
-      particles[i] = new Particle(this);
-    }
+    setupData();
     updateFloor();
   }
 
@@ -59,7 +55,7 @@ class Floor {
   /*
    *  Creates tables for data points using the EIF API and sets the respective values
    */
-  void setupTables() {
+  void setupData() {
     //setup temp
     Table tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
     temp = tempTable.getFloat(tempTable.getRowCount()-1, 1);
@@ -67,6 +63,10 @@ class Floor {
     Table pollutantTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=AP2", "csv");
     float value = pollutantTable.getFloat(pollutantTable.getRowCount()-1, 1);
     pollutants = int(map(value, 0, 2.5, 1, 15));
+    particles = new Particle[pollutants];
+    for (int i = 0; i < particles.length; i++) {
+      particles[i] = new Particle(this);
+    }
     //setup humidity
     Table humTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=HUMA", "csv");
     hum = humTable.getFloat(humTable.getRowCount()-1, 1);
