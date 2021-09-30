@@ -37,9 +37,11 @@ class Floor {
     pg.beginDraw();
     pg.clear();
     floorTemp();
-    for (Particle p : particles) {
-      p.update();
-      p.display();
+    if (pollutTog) {
+      for (Particle p : particles) {
+        p.update();
+        p.display();
+      }
     }
     floorOverlay();
     pg.endDraw();
@@ -80,14 +82,18 @@ class Floor {
       pg.strokeWeight(1);
     }
     pg.stroke(0);
-    if (m < 0) {
-      pg.fill(map(int(m)*-1, 1, 255, 255, 1), map(int(m)*-1, 1, 255, 255, 1), 255, opac);
-      pg.rect(0, 0, floorWidth, floorHeight);
-    } else if (m >= 0) {
-      pg.fill(255, map(int(m), 0, 255, 255, 0), map(int(m), 0, 255, 255, 0), opac);
-      pg.rect(0, 0, floorWidth, floorHeight);
+    if (tempTog) {
+      if (m < 0) {
+        pg.fill(map(int(m)*-1, 1, 255, 255, 1), map(int(m)*-1, 1, 255, 255, 1), 255, opac);
+      } else if (m >= 0) {
+        pg.fill(255, map(int(m), 0, 255, 255, 0), map(int(m), 0, 255, 255, 0), opac);
+        
+      }
+    } else {
+      pg.fill(255, opac);
     }
-    pg.fill(0);
+    pg.rect(0, 0, floorWidth, floorHeight);
+    //pg.fill(0);
     //pg.text(temp, pg.width/2, pg.height/2);
   }
   //TEMPERATURE END
