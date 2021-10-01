@@ -11,6 +11,11 @@ void setupInClust() {
 }
 
 void floorView() {
+  if (floorViewBtn == null){
+  
+  return;
+  
+  }
   if (floorViewTog) { 
     floorViewBtn.setColorBackground(btnCol).setColorForeground(btnCol);
   } else {

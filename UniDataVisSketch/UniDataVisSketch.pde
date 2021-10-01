@@ -21,6 +21,7 @@ String[] sensors = {"ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_01_411_7E39", 
 
 //weather
 Weather weather;
+Drop[] drops = new Drop[200];
 
 // Other
 PShape building;
@@ -49,6 +50,9 @@ void setup() {
   //Font
   //Weather
   weather = new Weather();
+  for (int i = 0; i < drops.length; i++) {
+    drops[i] = new Drop();
+  }
 }
 
 void draw() {
@@ -62,6 +66,10 @@ void draw() {
   quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, 
     width, height, width, height-(2.3*floorHeight));
   drawPavement();
+  //rain WILL REFACTOR LATER
+
+
+
 
 
   // Building (bit basic - might be worth improving/texturing)
@@ -69,6 +77,12 @@ void draw() {
   fill(255);
   textFont(buildingFont);
   text("U T S", 780, 160);
+  
+    for (int i = 0; i < drops.length; i++) {
+    drops[i].fall();
+    drops[i].show();
+  }
+  
   // Floors 
   if (floorViewTog) {
     for (Floor f : floors) {
