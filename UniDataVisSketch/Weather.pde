@@ -1,10 +1,13 @@
 class Weather {
   static final int NUM_CLOUDS = 8; 
+  static final int NUM_STARS = 20;
   float[] x = new float[NUM_CLOUDS], y = new float[NUM_CLOUDS];
+  float[] star_x = new float[NUM_STARS], star_y = new float[NUM_STARS];
   float sun_x, sun_y, moon_x, moon_y;
   PShape cloud;
   PShape sun;
   PShape moon;
+  PShape star;
   float speed = -1.0;  
   color noon = color(135, 207, 235);
   color night = color(15, 44, 64);
@@ -18,20 +21,26 @@ class Weather {
     this.cloud = createCloud();
     this.sun = createSun();
     this.moon = createMoon();
+    this.star = createStarD();
     for (int i = 0; i < NUM_CLOUDS; i++) {
 
       x[i] = random(width);
       y[i] = random(height/2);
+
+      for (int f = 0; f < NUM_STARS; f++) {
+        star_x[f] = random(width);
+        star_y[f] = random(height/2);
+      }
     }
   }
 
   void draw() { //creates the objects for the clouds
 
 
-    //time = (hour()*60+minute())/720f;
-    time = (20*60+0)/720f; 
-    //timeOfDay = hour();
-    timeOfDay = 20;
+    time = (hour()*60+minute())/720f;
+    //time = (20*60+0)/720f; 
+    timeOfDay = hour();
+    //timeOfDay = 20;
 
 
     color sky = lerpColor(noon, night, abs(time-1));
@@ -46,6 +55,10 @@ class Weather {
     moon_x = lerp(0, width, (time+1.5)%1);
     if (timeOfDay <=6 || timeOfDay >= 18) {
       shape(moon, moon_x, moon_y);
+
+      for (int f = 0; f < NUM_STARS; f++) {
+        shape(star, star_x[f], star_y[f]);
+      }
     }
 
     for (int i = 0; i < NUM_CLOUDS; i++) {
@@ -94,9 +107,25 @@ PShape createSun() {
 
 PShape createMoon() {
 
-  
+
   PShape moon = createShape(ELLIPSE, 0, 40, 20, 20);
   moon.setFill(#FFFFFF);
   moon.setStroke(false);
   return moon;
 }  
+
+PShape createStarD() {
+  PShape star = createShape();
+  star.beginShape();
+  star.stroke(255, 150);
+  star.strokeJoin(MITER);
+  star.strokeWeight(2);
+  star.fill(255);
+  star.vertex(0, -15);
+  star.bezierVertex(3, -3, 3, -3, 15, 0);
+  star.bezierVertex(3, 3, 3, 3, 0, 15);
+  star.bezierVertex(-3, 3, -3, 3, -15, 0);
+  star.bezierVertex(-3, -3, -3, -3, 0, -15);
+  star.endShape(CLOSE);
+  return star;
+}
