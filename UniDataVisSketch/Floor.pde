@@ -4,17 +4,22 @@ class Floor {
   int topY;
   // Visuals and Data
   PGraphics pg; // the PGraphics is the 'stage'/'view' for the floor
-  float temp; //each floors temp
-  float hum; //each floors humidity
+  float temp; //each floors temp (degrees C)
+  float hum; //each floors humidity (percentage)
+  float pollut; // each floors pollutants ammount (ppm)
   int pollutants;
   Particle[] particles;
   // Interaction
   boolean mouseHover = false;
+  // Popup
+  boolean popup = false;
+  PGraphics pu; 
 
   Floor(int floorNum) {
     this.floorNum = floorNum;
     topY = height - floorHeight*(floorNum+1);
     pg = createGraphics(floorWidth+1, floorHeight);
+    pu = createGraphics(200, 200);
     setupData();
     updateFloor();
   }
@@ -24,6 +29,13 @@ class Floor {
    */
   void drawFloor() {
     image(pg, leftGap, topY);
+    if (popup) {
+      if (topY + pu.height > height) {
+        image(pu, leftGap+floorWidth+25, height-pu.height);
+      } else {
+        image(pu, leftGap+floorWidth+25, topY);
+      }
+    }
   }
 
   /*
@@ -67,8 +79,8 @@ class Floor {
     //setup airquality
     try {
       Table pollutantTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=AP2", "csv");
-      float value = pollutantTable.getFloat(pollutantTable.getRowCount()-1, 1);
-      pollutants = int(map(value, 0, 2.5, 1, 15));
+      pollut = pollutantTable.getFloat(pollutantTable.getRowCount()-1, 1);
+      pollutants = int(map(pollut, 0, 2.5, 1, 15));
     } catch (Exception e) {
       println("Invalid air pollutant table or data");
       pollutants = 8;
@@ -85,6 +97,20 @@ class Floor {
       println("Invalid humidity table or data");
       hum = 70;
     }
+    // setup popup
+    updatePopup();
+  }
+  
+  void updatePopup() {
+    pu.beginDraw();
+    pu.fill(127, 240);
+    pu.stroke(66);
+    pu.strokeWeight(1);
+    pu.rect(0, 0, pu.width-1, pu.height-1, 5);
+    pu.fill(0);
+    pu.textAlign(CENTER);
+    pu.text("Exact data values go here.", pu.width/2, pu.height/2); 
+    pu.endDraw();
   }
 
   // TEMPERATURE START

@@ -108,14 +108,3 @@ void refreshPeopleData() {
     people.add(new Person());
   }
 }
-
-void displayLoading() {
-  fill(255, 120);
-  rect(0, 0, width, height);
-  fill(0);
-  pushStyle();
-  textFont(buildingFont);
-  textAlign(CENTER);
-  text("Loading...", width/2, height/2);
-  popStyle();
-}

@@ -166,4 +166,15 @@ void checkFloorHover(Floor f) {
 
 void mouseClicked() {
   println("Clicked: " + mouseX + ", " + mouseY); // Used during testing. To be removed before final build release
+  if (mouseX < inputPos.x || mouseY < inputPos.y) {
+    for (Floor f : floors) {
+      if (f != null) {
+        if (f.mouseHover) {
+          f.popup = !f.popup;
+        } else {
+          f.popup = false;
+        }
+      }
+    }
+  }
 }
