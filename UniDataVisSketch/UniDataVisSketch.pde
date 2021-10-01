@@ -22,6 +22,9 @@ String[] sensors = {"ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_01_411_7E39", 
 //weather
 Weather weather;
 
+//People
+Person[] people;
+
 // Other
 PShape building;
 
@@ -49,8 +52,12 @@ void setup() {
   //Font
   //Weather
   weather = new Weather();
-  //people counter table setup
+  //people counter setup
   setupPeopleTable();
+  people = new Person[pCount];
+  for (int i = 0; i < pCount; i++) {
+    people[i] = new Person();
+  }
 }
 
 void draw() {
@@ -65,7 +72,6 @@ void draw() {
     width, height, width, height-(2.3*floorHeight));
   drawPavement();
   weather.draw();
-  peopleController();
 
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
@@ -80,6 +86,13 @@ void draw() {
         f.updateFloor();
       }
     }
+  }
+  //drawing people
+  for (Person p : people)
+  {
+    if (p != null) {
+        p.drawPerson();
+      }
   }
 }
 
