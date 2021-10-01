@@ -149,58 +149,63 @@ void sound() {
 }
 
 void incTime() {
-  if (dayMod > 0) {
-    modTime(1);
-    refreshFloorData();
-    refreshPeopleData();
-    dayMod--;
-    setLockout();
+  if (frameCount > 2) {
+    if (dayMod > 0) {
+      modTime(1);
+      refreshFloorData();
+      refreshPeopleData();
+      dayMod--;
+      setLockout();
+    }
   }
 }
 
 void decTime() {
-  modTime(-1);
-  refreshFloorData();
-  refreshPeopleData();
-  dayMod++;
-  setLockout();
+  if (frameCount > 2) {
+    modTime(-1);
+    refreshFloorData();
+    refreshPeopleData();
+    dayMod++;
+    setLockout();
+  }
 }
 
 void refreshData() {
-  refreshFloorData();
-  refreshPeopleData();
-  setLockout();
+  if (frameCount > 2) {
+    refreshFloorData();
+    refreshPeopleData();
+    setLockout();
+  }
 }
 
 void resetTime() {
-  day = day();
-  month = month();
-  year = year();
-  dayMod = 0;
-  refreshFloorData();
-  refreshPeopleData();
-  setLockout();
+  if (frameCount > 2) {
+    day = day();
+    month = month();
+    year = year();
+    dayMod = 0;
+    refreshFloorData();
+    refreshPeopleData();
+    setLockout();
+  }
 }
 // End Button Methods
 
 // Button Lockout Methods - to avoid being 403d by EIF API
 // Not the neatest code ever, but it is functional. CP5 really should just have a disable button method though
 void setLockout() {
-  if (frameCount > 2) {
-    lockoutTime = millis();
-    incTimeBtn.setBroadcast(false);
-    decTimeBtn.setBroadcast(false);
-    refreshDataBtn.setBroadcast(false)
-      .setColorBackground(btnDisableCol)
-      .setColorForeground(btnDisableCol)
-      .setColorActive(btnDisableCol);
-    resetTimeBtn.setBroadcast(false)
-      .setColorBackground(btnDisableCol)
-      .setColorForeground(btnDisableCol)
-      .setColorActive(btnDisableCol);
-    lockout = true;
-    println("locked"); 
-  }
+  lockoutTime = millis();
+  incTimeBtn.setBroadcast(false);
+  decTimeBtn.setBroadcast(false);
+  refreshDataBtn.setBroadcast(false)
+    .setColorBackground(btnDisableCol)
+    .setColorForeground(btnDisableCol)
+    .setColorActive(btnDisableCol);
+  resetTimeBtn.setBroadcast(false)
+    .setColorBackground(btnDisableCol)
+    .setColorForeground(btnDisableCol)
+    .setColorActive(btnDisableCol);
+  lockout = true;
 }
 
 void checkLockoutTimer() {
@@ -217,7 +222,6 @@ void checkLockoutTimer() {
         .setColorForeground(btnCol)
         .setColorActive(color(215, 218, 220));
       lockout = false;
-      println("unlocked");
     }
   }
 }

@@ -31,8 +31,8 @@ class Person{
 
 void setupPeopleTable(){
   try {
-  Table pTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=people_sh&rSensor=CB11.PC02.16.JonesStEast&rSubSensor=CB11.02.JonesSt+Out", "csv");
-  pCount = pTable.getInt(pTable.getRowCount()-1,1);
+    Table pTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=people_sh&rSensor=CB11.PC02.16.JonesStEast&rSubSensor=CB11.02.JonesSt+Out", "csv");
+    pCount = pTable.getInt(pTable.getRowCount()-1,1);
   } catch(Exception e){
     println("No response from SightHound");
     pCount = 1;
