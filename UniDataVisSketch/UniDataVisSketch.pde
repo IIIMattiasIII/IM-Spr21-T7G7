@@ -22,6 +22,10 @@ color sky;
 String[] sensors = {"ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_04_415_7BD1", "ES_B_04_415_7BD1", "ES_B_05_416_7C15", "ES_B_06_418_7BED", "ES_B_07_420_7E1D", "ES_B_08_422_7BDC", "ES_B_09_425_3E8D", "ES_B_09_425_3E8D", "ES_B_11_428_3EA4", "ES_B_12_431_7BC2"};
 //weather
 Weather weather;
+
+//People
+Person[] people;
+
 // Other
 PShape building;
 
@@ -53,6 +57,12 @@ void setup() {
   buildingFont = createFont("Arial Bold", 96);
   //Weather
   weather = new Weather();
+  //people counter setup
+  setupPeopleTable();
+  people = new Person[pCount];
+  for (int i = 0; i < pCount; i++) {
+    people[i] = new Person();
+  }
 }
 
 void draw() {
@@ -131,6 +141,13 @@ void draw() {
   fill(255);
   text("-", inputPos.x+40, inputPos.y+49);
   text("+", inputPos.x+210, inputPos.y+49);
+  //drawing people
+  for (Person p : people)
+  {
+    if (p != null) {
+        p.drawPerson();
+      }
+  }
 }
 
 void checkFloorHover(Floor f) {
