@@ -59,7 +59,7 @@ void setup() {
   weather = new Weather();
   //people counter setup
   setupPeopleTable();
-  people = new Person[pCount];
+  people = new Person[80]; //setting array size to pCount causes issues later so 80 is used as 80 is EIF max for people counter
   for (int i = 0; i < pCount; i++) {
     people[i] = new Person();
   }
