@@ -92,6 +92,7 @@ void setupInClust() {
     .setColorActive(color(215, 218, 220));
 }
 
+// Begin Button Methods
 void floorView() {
   if (frameCount>2) {
     if (floorViewTog) { 
@@ -153,6 +154,7 @@ void incTime() {
     refreshFloorData();
     refreshPeopleData();
     dayMod--;
+    setLockout();
   }
 }
 
@@ -161,11 +163,13 @@ void decTime() {
   refreshFloorData();
   refreshPeopleData();
   dayMod++;
+  setLockout();
 }
 
 void refreshData() {
   refreshFloorData();
   refreshPeopleData();
+  setLockout();
 }
 
 void resetTime() {
@@ -175,4 +179,46 @@ void resetTime() {
   dayMod = 0;
   refreshFloorData();
   refreshPeopleData();
+  setLockout();
 }
+// End Button Methods
+
+// Button Lockout Methods - to avoid being 403d by EIF API
+// Not the neatest code ever, but it is functional. CP5 really should just have a disable button method though
+void setLockout() {
+  if (frameCount > 2) {
+    lockoutTime = millis();
+    incTimeBtn.setBroadcast(false);
+    decTimeBtn.setBroadcast(false);
+    refreshDataBtn.setBroadcast(false)
+      .setColorBackground(btnDisableCol)
+      .setColorForeground(btnDisableCol)
+      .setColorActive(btnDisableCol);
+    resetTimeBtn.setBroadcast(false)
+      .setColorBackground(btnDisableCol)
+      .setColorForeground(btnDisableCol)
+      .setColorActive(btnDisableCol);
+    lockout = true;
+    println("locked"); 
+  }
+}
+
+void checkLockoutTimer() {
+  if (lockout) {
+    if (millis() > lockoutTime+5000) {
+      incTimeBtn.setBroadcast(true);
+      decTimeBtn.setBroadcast(true);
+      refreshDataBtn.setBroadcast(true)
+        .setColorBackground(btnCol)
+        .setColorForeground(btnCol)
+        .setColorActive(color(215, 218, 220));
+      resetTimeBtn.setBroadcast(true)
+        .setColorBackground(btnCol)
+        .setColorForeground(btnCol)
+        .setColorActive(color(215, 218, 220));
+      lockout = false;
+      println("unlocked");
+    }
+  }
+}
+// End button Lockout Methods

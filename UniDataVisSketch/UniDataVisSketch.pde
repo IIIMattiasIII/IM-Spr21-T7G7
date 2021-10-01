@@ -12,22 +12,22 @@ boolean floorViewTog = false, tempTog = true, humTog = true, pollutTog = true, s
 Button incTimeBtn, decTimeBtn, resetTimeBtn, refreshDataBtn;
 int day = day(), month = month(), year = year(), dayMod = 0;
 int[] daysInMonth = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+int lockoutTime = 0;
+boolean lockout = false;
 PVector inputPos = new PVector();
 PFont btnFont, dayModBtnFont;
-PFont buildingFont;
-color btnCol = color(52, 53, 54);
-color btnTogCol = color(38, 102, 102);
-color sky;
+color btnCol = color(52, 53, 54), btnTogCol = color(38, 102, 102), btnDisableCol = color(52, 53, 54, 160);
 //Sensor array
 String[] sensors = {"ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_04_415_7BD1", "ES_B_04_415_7BD1", "ES_B_05_416_7C15", "ES_B_06_418_7BED", "ES_B_07_420_7E1D", "ES_B_08_422_7BDC", "ES_B_09_425_3E8D", "ES_B_09_425_3E8D", "ES_B_11_428_3EA4", "ES_B_12_431_7BC2"};
-//weather
+// Weather
 Weather weather;
-
-//People
+color sky;
+// People
 ArrayList<Person> people = new ArrayList<Person>();
-
+int pCount;
 // Other
 PShape building;
+PFont buildingFont;
 
 void setup() {
   // General Setup
@@ -96,6 +96,13 @@ void draw() {
     textFont(buildingFont);
     text("U T S", 780, 160);
   }
+  //drawing people
+  for (Person p : people)
+  {
+    if (p != null) {
+        p.drawPerson();
+      }
+  }
   // Input Cluster
     // Shadow Boxes
   fill(255, 100);
@@ -121,13 +128,17 @@ void draw() {
   }
   text(dayDisplay, inputPos.x+125, inputPos.y+20);
     // Triangles/arrows for inc and dec buttons
-  if (decTimeBtn.isPressed()) { 
+  if (lockout) {
+    fill(btnDisableCol);
+  } else if (decTimeBtn.isPressed()) { 
     fill(215, 218, 220);
   } else { 
     fill(btnCol);
   }
   triangle(inputPos.x+65, inputPos.y, inputPos.x, inputPos.y+40, inputPos.x+65, inputPos.y+80);
-  if (incTimeBtn.isPressed()) { 
+  if (lockout) {
+    fill(btnDisableCol);
+  } else if (incTimeBtn.isPressed()) { 
     fill(215, 218, 220);
   } else { 
     fill(btnCol);
@@ -137,13 +148,8 @@ void draw() {
   fill(255);
   text("-", inputPos.x+40, inputPos.y+49);
   text("+", inputPos.x+210, inputPos.y+49);
-  //drawing people
-  for (Person p : people)
-  {
-    if (p != null) {
-        p.drawPerson();
-      }
-  }
+    // Button lockout
+  checkLockoutTimer();
 }
 
 void checkFloorHover(Floor f) {

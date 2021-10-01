@@ -27,9 +27,7 @@ class Person{
     rect(xPos + 17,yPos + 20,12,40,20);
     
   }
-}
-
-int pCount;
+} // End people class
 
 void setupPeopleTable(){
   try {
