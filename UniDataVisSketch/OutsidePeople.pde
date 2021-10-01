@@ -10,7 +10,7 @@ class Person{
   }
   
   void changePos(){
-  xPos = int(random(1092,15));
+  xPos = int(random(1092,1511));
   yPos = int(random(735,903));
   }
   
