@@ -103,13 +103,9 @@ void refreshFloorData() {
 
 void refreshPeopleData() {
   setupPeopleTable();
-  for (Person p : people) {
-    if (p!=null) {
-      p = null;
-    }
-  }
+  people.clear();
   for (int i = 0; i < pCount; i++) {
-    people[i] = new Person();
+    people.add(new Person());
   }
 }
 

@@ -24,7 +24,7 @@ String[] sensors = {"ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_01_411_7E39", 
 Weather weather;
 
 //People
-Person[] people;
+ArrayList<Person> people = new ArrayList<Person>();
 
 // Other
 PShape building;
@@ -58,11 +58,7 @@ void setup() {
   //Weather
   weather = new Weather();
   //people counter setup
-  setupPeopleTable();
-  people = new Person[80]; //setting array size to pCount causes issues later so 80 is used as 80 is EIF max for people counter
-  for (int i = 0; i < pCount; i++) {
-    people[i] = new Person();
-  }
+  refreshPeopleData();
 }
 
 void draw() {
@@ -148,6 +144,7 @@ void draw() {
         p.drawPerson();
       }
   }
+  text(pCount, 1639, 390);
 }
 
 void checkFloorHover(Floor f) {
