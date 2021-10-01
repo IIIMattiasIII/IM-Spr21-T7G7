@@ -144,7 +144,6 @@ void draw() {
         p.drawPerson();
       }
   }
-  text(pCount, 1639, 390);
 }
 
 void checkFloorHover(Floor f) {
