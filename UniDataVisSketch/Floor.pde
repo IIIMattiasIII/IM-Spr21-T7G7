@@ -57,19 +57,34 @@ class Floor {
    */
   void setupData() {
     //setup temp
-    Table tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
-    temp = tempTable.getFloat(tempTable.getRowCount()-1, 1);
+    try {
+      Table tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
+      temp = tempTable.getFloat(tempTable.getRowCount()-1, 1);
+    } catch (Exception e) {
+      println("Invalid temperature table or data");
+      temp = 20;
+    }
     //setup airquality
-    Table pollutantTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=AP2", "csv");
-    float value = pollutantTable.getFloat(pollutantTable.getRowCount()-1, 1);
-    pollutants = int(map(value, 0, 2.5, 1, 15));
+    try {
+      Table pollutantTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=AP2", "csv");
+      float value = pollutantTable.getFloat(pollutantTable.getRowCount()-1, 1);
+      pollutants = int(map(value, 0, 2.5, 1, 15));
+    } catch (Exception e) {
+      println("Invalid air pollutant table or data");
+      pollutants = 8;
+    }
     particles = new Particle[pollutants];
     for (int i = 0; i < particles.length; i++) {
       particles[i] = new Particle(this);
     }
     //setup humidity
-    Table humTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=HUMA", "csv");
-    hum = humTable.getFloat(humTable.getRowCount()-1, 1);
+    try {
+      Table humTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=HUMA", "csv");
+      hum = humTable.getFloat(humTable.getRowCount()-1, 1);
+    } catch (Exception e) {
+      println("Invalid humidity table or data");
+      hum = 70;
+    }
   }
 
   // TEMPERATURE START
