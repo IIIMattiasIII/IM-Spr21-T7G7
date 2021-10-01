@@ -151,6 +151,7 @@ void incTime() {
   if (dayMod > 0) {
     modTime(1);
     refreshFloorData();
+    refreshPeopleData();
     dayMod--;
   }
 }
@@ -158,11 +159,13 @@ void incTime() {
 void decTime() {
   modTime(-1);
   refreshFloorData();
+  refreshPeopleData();
   dayMod++;
 }
 
 void refreshData() {
   refreshFloorData();
+  refreshPeopleData();
 }
 
 void resetTime() {
@@ -171,4 +174,5 @@ void resetTime() {
   year = year();
   dayMod = 0;
   refreshFloorData();
+  refreshPeopleData();
 }

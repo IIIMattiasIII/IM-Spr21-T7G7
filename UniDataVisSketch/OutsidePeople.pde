@@ -1,15 +1,16 @@
 class Person{
   int xPos;
   int yPos;
-  color col = color(random(0,255), random(0,255), random(0,255));
+  color col;
   
   
   public Person() {
     changePos();
+    col = color(random(0,255), random(0,255), random(0,255));
   }
   
   void changePos(){
-  xPos = int(random(1072,1815));
+  xPos = int(random(1092,15));
   yPos = int(random(735,903));
   }
   

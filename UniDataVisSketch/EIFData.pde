@@ -101,6 +101,14 @@ void refreshFloorData() {
   }
 }
 
+void refreshPeopleData() {
+  setupPeopleTable();
+  people = new Person[pCount];
+  for (int i = 0; i < pCount; i++) {
+    people[i] = new Person();
+  }
+}
+
 void displayLoading() {
   fill(255, 120);
   rect(0, 0, width, height);
