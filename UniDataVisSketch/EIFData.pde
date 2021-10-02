@@ -107,4 +107,8 @@ void refreshPeopleData() {
   for (int i = 0; i < pCount; i++) {
     people.add(new Person());
   }
+  if (crowd.isPlaying()){
+  crowd.stop();
+  }
+  startNoise();
 }

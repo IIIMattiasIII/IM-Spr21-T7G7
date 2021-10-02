@@ -1,8 +1,9 @@
+import processing.sound.*;
+
 class Person{
   int xPos;
   int yPos;
   color col;
-  
   
   public Person() {
     changePos();
@@ -33,9 +34,28 @@ void setupPeopleTable(){
   try {
     Table pTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=people_sh&rSensor=CB11.PC02.16.JonesStEast&rSubSensor=CB11.02.JonesSt+Out", "csv");
     pCount = pTable.getInt(pTable.getRowCount()-1,1);
+    vol = map(pCount, 1, 30, 0.05, 1);
   } catch(Exception e){
     println("No response from SightHound");
     pCount = 1;
+    vol = 0.05;
+    
   }
   
+}
+
+void startNoise(){
+  if (soundTog){
+    if (!crowd.isPlaying()){
+      crowd.amp(vol);
+      crowd.cue(random(1,15));
+      crowd.play();       //I want this to fade in but it seems like a ton of effort
+    }
+  }
+  else{stopNoise();}
+}
+void stopNoise(){
+  if (crowd.isPlaying()){
+  crowd.stop();
+  }
 }

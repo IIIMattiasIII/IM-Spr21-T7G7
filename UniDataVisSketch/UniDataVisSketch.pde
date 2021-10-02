@@ -25,6 +25,8 @@ color sky;
 // People
 ArrayList<Person> people = new ArrayList<Person>();
 int pCount;
+float vol;
+SoundFile crowd;
 // Other
 PShape building;
 PFont buildingFont;
@@ -58,6 +60,7 @@ void setup() {
   //Weather
   weather = new Weather();
   //people counter setup
+  crowd = new SoundFile(this, "crowd.wav");
   refreshPeopleData();
 }
 
@@ -102,6 +105,7 @@ void draw() {
     if (p != null) {
         p.drawPerson();
       }
+  startNoise();
   }
   // Input Cluster
     // Shadow Boxes
