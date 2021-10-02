@@ -91,14 +91,33 @@ void modTime(int t) {
   }
 }
 
+void refreshAll() {
+  loading = true;
+  setLockout();
+  thread("refreshPeopleData");
+  //thread("refreshWeatherData"); // Commented out until weather data is inmplemented
+  thread("refreshFloorData");
+}
+
+void displayLoading() {
+  fill(255, 240);
+  rect(0, 0, width, height);
+  fill(0);
+  pushStyle();
+  textFont(buildingFont);
+  textAlign(CENTER);
+  text("Loading...", width/2, height/2);
+  popStyle();
+}
+
 void refreshFloorData() {
-  //displayLoading(); // Loading call is not useful presently due to how Processing draws frames, will remain commented out until a solution is found
   for (Floor f : floors) {
     if (f!=null) {
       f.setupData();
       f.updateFloor();
     }
   }
+  loading = false;
 }
 
 void refreshPeopleData() {
