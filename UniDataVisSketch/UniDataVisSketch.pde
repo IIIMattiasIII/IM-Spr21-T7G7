@@ -130,7 +130,6 @@ void draw() {
   //road + pavement shapes
   drawPavement();
 
-  weather.draw();
   //drawing people
   for (Person p : people) {
     if (p != null) {
@@ -143,10 +142,6 @@ void draw() {
 
   //rain WILL REFACTOR LATER
 
-
-  fill(255);
-  textFont(buildingFont);
-  text("U T S", 780, 160);
   
     for (int i = 0; i < drops.length; i++) {
     drops[i].fall();
