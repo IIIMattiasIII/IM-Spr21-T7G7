@@ -32,6 +32,7 @@ SoundFile crowd;
 // Other
 PShape building;
 PFont buildingFont;
+PGraphics pk;
 
 void setup() {
   // General Setup
@@ -58,12 +59,51 @@ void setup() {
   // Building
   building = createBuilding();
   buildingFont = createFont("Arial Bold", 96);
+  pk = createGraphics(floorWidth, 250, P2D);
+  createKey();
   //Weather
   weather = new Weather();
   //people counter setup
   crowd = new SoundFile(this, "crowd.wav");
   refreshPeopleData();
   frameRate(60);
+}
+
+void createKey() {
+  pk.beginDraw();
+  pk.textFont(buildingFont);
+  pk.textAlign(CENTER);
+  pk.textSize(36);
+  pk.text("Key", floorWidth/2, 33);
+  pk.textFont(popupFont);
+  pk.textAlign(LEFT);
+  pk.textLeading(23);
+  pk.text("Particles represent the air pollutants. Each particles represents approx. 0.15 ppm.", 100, 78);
+  pk.text("The colour of the floors represents their temperature. Their opacity represents the humidity.", 100, 126);
+  pk.text("The figures represent the people count. Each figure represents one person that the camera\nin the sensor can see. This people count also affects the ambient noise volume.", 100, 172);
+  pk.text("Externally, the cloud speed represents the local windspeed and the day-night cycle is locally accurate.", 45, 230);
+    // Particle
+  pk.stroke(0);
+  pk.strokeWeight(2);
+  pk.fill(79,70,53);
+  pk.ellipse(65, 70, 20, 20);
+    // Floor Representation
+  pk.strokeWeight(0.9);
+  pk.beginShape();
+  pk.fill(255,0,0);
+  pk.vertex(45, 100);
+  pk.fill(255);
+  pk.vertex(85, 100);
+  pk.fill(0,0,255);
+  pk.vertex(85, 140);
+  pk.fill(255);
+  pk.vertex(45, 140);
+  pk.endShape(CLOSE);
+    // Person
+  PShape p = createPerson(255);
+  p.scale(0.42);
+  pk.shape(p, 65, 155); 
+  pk.endDraw();
 }
 
 void draw() {
@@ -82,8 +122,8 @@ void draw() {
     if (p != null) {
       p.drawPerson();
     }
-  startNoise();
   }
+  startNoise();
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
   // Floors 
@@ -106,7 +146,9 @@ void draw() {
     fill(255);
     textAlign(LEFT);
     textFont(buildingFont);
-    text("U T S", 780, 160);
+    text("U T S", leftGap+630, 160);
+    // Key
+    image(pk, leftGap, height-250);
   }
   // Input Cluster
     // Shadow Boxes

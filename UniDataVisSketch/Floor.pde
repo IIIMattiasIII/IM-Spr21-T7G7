@@ -163,8 +163,6 @@ class Floor {
       pg.fill(255, opac);
     }
     pg.rect(0, 0, floorWidth, floorHeight);
-    //pg.fill(0);
-    //pg.text(temp, pg.width/2, pg.height/2);
   }
   //TEMPERATURE END
 } // END FLOOR CLASS
