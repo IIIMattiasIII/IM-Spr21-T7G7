@@ -15,7 +15,7 @@ Button incTimeBtn, decTimeBtn, resetTimeBtn, refreshDataBtn;
 int day = day(), month = month(), year = year(), dayMod = 0;
 int[] daysInMonth = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 int lockoutTime = 0;
-boolean lockout = false;
+boolean lockout = false, loading = false;
 PVector inputPos = new PVector();
 PFont btnFont, dayModBtnFont;
 color btnCol = color(52, 53, 54), btnTogCol = color(38, 102, 102), btnDisableCol = color(52, 53, 54, 160);
@@ -46,6 +46,7 @@ void setup() {
   btnFont = createFont("Gadugi", 14);
   dayModBtnFont = createFont("Gadugi", 32);
   control = new ControlP5(this);
+  control.setAutoDraw(false);
   inputPos.x = width-260;
   inputPos.y = height-240;
   setupInClust();
@@ -204,8 +205,15 @@ void draw() {
   fill(255);
   text("-", inputPos.x+40, inputPos.y+49);
   text("+", inputPos.x+210, inputPos.y+49);
-    // Button lockout
-  checkLockoutTimer();
+    // Draw control buttons - autoDraw disabled in setup to allow loading to be displayed on top
+  control.draw();
+    // Button lockout and loading
+  if (loading) {
+    displayLoading();
+  } else {
+    checkLockoutTimer(); // moved here in case loading is taking longer than normal - will remain locked out this way
+  }
+    
 }
 
 void checkFloorHover(Floor f) {

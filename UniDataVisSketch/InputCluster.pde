@@ -152,10 +152,8 @@ void incTime() {
   if (frameCount > 2) {
     if (dayMod > 0) {
       modTime(1);
-      refreshFloorData();
-      refreshPeopleData();
+      refreshAll();
       dayMod--;
-      setLockout();
     }
   }
 }
@@ -163,18 +161,14 @@ void incTime() {
 void decTime() {
   if (frameCount > 2) {
     modTime(-1);
-    refreshFloorData();
-    refreshPeopleData();
+    refreshAll();
     dayMod++;
-    setLockout();
   }
 }
 
 void refreshData() {
   if (frameCount > 2) {
-    refreshFloorData();
-    refreshPeopleData();
-    setLockout();
+    refreshAll();
   }
 }
 
@@ -184,9 +178,7 @@ void resetTime() {
     month = month();
     year = year();
     dayMod = 0;
-    refreshFloorData();
-    refreshPeopleData();
-    setLockout();
+    refreshAll();
   }
 }
 // End Button Methods
