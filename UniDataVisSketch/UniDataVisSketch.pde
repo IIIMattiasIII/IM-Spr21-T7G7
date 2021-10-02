@@ -7,6 +7,7 @@ ControlP5 control;
 Floor[] floors = new Floor[17];
 PGraphics humNoiseG;
 int leftGap = 150, floorWidth = 900, floorHeight = 70;
+
 // InputCluster (Data and Time)
 Button floorViewBtn, tempBtn, humBtn, pollutBtn, soundBtn;
 boolean floorViewTog = false, tempTog = true, humTog = true, pollutTog = true, soundTog = true;
@@ -19,16 +20,22 @@ boolean lockout = false;
 PVector inputPos = new PVector();
 PFont btnFont, dayModBtnFont;
 color btnCol = color(52, 53, 54), btnTogCol = color(38, 102, 102), btnDisableCol = color(52, 53, 54, 160);
+
 //Sensor array
 String[] sensors = {"ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_04_415_7BD1", "ES_B_04_415_7BD1", "ES_B_05_416_7C15", "ES_B_06_418_7BED", "ES_B_07_420_7E1D", "ES_B_08_422_7BDC", "ES_B_09_425_3E8D", "ES_B_09_425_3E8D", "ES_B_11_428_3EA4", "ES_B_12_431_7BC2"};
 // Weather
 Weather weather;
+
 color sky;
 // People
 ArrayList<Person> people = new ArrayList<Person>();
 int pCount;
 float vol;
 SoundFile crowd;
+
+Drop[] drops = new Drop[200];
+
+
 // Other
 PShape building;
 PFont buildingFont;
@@ -63,9 +70,15 @@ void setup() {
   createKey();
   //Weather
   weather = new Weather();
+
   //people counter setup
   crowd = new SoundFile(this, "crowd.wav");
   refreshPeopleData();
+
+  for (int i = 0; i < drops.length; i++) {
+    drops[i] = new Drop();
+  }
+
   frameRate(60);
 }
 
@@ -108,7 +121,7 @@ void createKey() {
 
 void draw() {
   // Sky
-  background(135, 207, 235);
+  weather.draw();
   // Ground
   strokeWeight(2);
   fill(77, 71, 66);
@@ -116,6 +129,7 @@ void draw() {
   quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, width, height, width, height-(2.3*floorHeight));
   //road + pavement shapes
   drawPavement();
+
   weather.draw();
   //drawing people
   for (Person p : people) {
@@ -126,6 +140,20 @@ void draw() {
   startNoise();
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
+
+  //rain WILL REFACTOR LATER
+
+
+  fill(255);
+  textFont(buildingFont);
+  text("U T S", 780, 160);
+  
+    for (int i = 0; i < drops.length; i++) {
+    drops[i].fall();
+    drops[i].show();
+  }
+  
+
   // Floors 
   if (floorViewTog) {
     if (humTog) { 
