@@ -129,7 +129,7 @@ PShape createStarD() {
   star.stroke(255, 150);
   star.strokeJoin(MITER);
   star.strokeWeight(2);
-  star.fill(255);
+  star.fill(255, 255, 146);
   star.vertex(0, -15);
   star.bezierVertex(3, -3, 3, -3, 15, 0);
   star.bezierVertex(3, 3, 3, 3, 0, 15);
