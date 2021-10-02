@@ -46,10 +46,10 @@ class Weather {
   void draw() { //creates the objects for the clouds
 
 
-    //time = (hour()*60+minute())/720f;
-    time = (20*60+0)/720f; 
-    //timeOfDay = hour();
-    timeOfDay = 20;
+    time = (hour()*60+minute())/720f;
+    //time = (20*60+0)/720f; 
+    timeOfDay = hour();
+    //timeOfDay = 20;
 
 
     color sky = lerpColor(noon, night, abs(time-1));
