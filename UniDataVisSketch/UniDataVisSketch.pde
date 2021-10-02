@@ -141,9 +141,9 @@ void draw() {
   shape(building, 0, 0);
 
   //rain WILL REFACTOR LATER
-
-  
-    for (int i = 0; i < drops.length; i++) {
+  //commenting rain function out for now until data table is loaded
+    float rainPercent = 0.2; // PLS ADD
+    for (int i = 0; i < floor(drops.length*constrain(rainPercent, 0, 1)); i++) {
     drops[i].fall();
     drops[i].show();
   }
