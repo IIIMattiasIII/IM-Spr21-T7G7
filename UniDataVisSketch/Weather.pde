@@ -5,10 +5,10 @@ class Weather {
   final int numStars = 20;
   float[] starX = new float[numStars], starY = new float[numStars];
   float starDist = 900;
-  float sunX, sunY, moonX, moonY;
+  float sunX, sunY, moonX, moonY, sunTheta, moonTheta;
   PShape cloud, sun, moon, star;
   color dayCol = color(135, 207, 235), nightCol = color(#041C37);
-  float time, hour;
+  int timeMins, hour;
 
   Weather() {
     this.cloud = createCloud();
@@ -29,22 +29,22 @@ class Weather {
 
   void drawWeather() { //creates the objects for the clouds
     hour = hour(); // Should really be removed entirely, but I've left it in so testing is easier
-    time = (hour*60+minute())/720f;
-    sky = lerpColor(dayCol, nightCol, abs(time-1));
+    timeMins = hour*60+minute();
+    sky = lerpColor(dayCol, nightCol, abs((timeMins/720f)-1));
     background(sky);
-    // Below to be changed to follow an arc rather than a straight line
-    sunX = lerp(0, width, time-0.5);
-    if (hour >=6 && hour <= 18) {
-      shape(sun, sunX, sunY);
-    }
-    moonX = lerp(0, width, (time+1.5)%1);
+    sunTheta = (map(timeMins, 0, 1440, 0, TAU)-PI/2)*-1; 
+    sunX = int(990*cos(sunTheta))+width/2;
+    sunY = int(990*sin(sunTheta))+height+100;
+    shape(sun, sunX, sunY);
+    moonTheta = (map(timeMins, 0, 1440, 0, TAU)+PI/2)*-1; 
+    moonX = int(990*cos(moonTheta))+width/2;
+    moonY = int(990*sin(moonTheta))+height+100;
+    shape(moon, moonX, moonY);
     if (hour <=6 || hour >= 18) {
-      shape(moon, moonX, moonY);
       for (int i = 0; i < numStars; i++) {
         shape(star, starX[i], starY[i]);
       }
     }
-    // See coment above
     for (int i = 0; i < numClouds; i++) {
       cloudX[i] -= cloudSpeed;
       if (cloudX[i] < -cloud.getWidth()) { 
