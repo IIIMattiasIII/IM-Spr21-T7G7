@@ -7,6 +7,7 @@ class Floor {
   float temp; //each floors temp (degrees C)
   float hum; //each floors humidity (percentage)
   float pollut; // each floors pollutants ammount (ppm)
+  boolean tempFail, humFail, pollutFail;
   int pollutants;
   Particle[] particles;
   // Interaction
@@ -19,7 +20,11 @@ class Floor {
     this.floorNum = floorNum;
     topY = height - floorHeight*(floorNum+1);
     pg = createGraphics(floorWidth+1, floorHeight);
-    pu = createGraphics(200, 200);
+    if (floorNum == 0 || floorNum == 2 || floorNum == 3 || floorNum == 10) {
+      pu = createGraphics(300, 193); 
+    } else {
+      pu = createGraphics(300, 150);
+    }
     setupData();
     updateFloor();
   }
@@ -72,18 +77,22 @@ class Floor {
     try {
       Table tempTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=TCA", "csv");
       temp = tempTable.getFloat(tempTable.getRowCount()-1, 1);
+      tempFail = false;
     } catch (Exception e) {
       println("Invalid temperature table or data");
       temp = 20;
+      tempFail = true;
     }
     //setup airquality
     try {
       Table pollutantTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=AP2", "csv");
       pollut = pollutantTable.getFloat(pollutantTable.getRowCount()-1, 1);
       pollutants = int(map(pollut, 0, 2.5, 1, 15));
+      pollutFail = false;
     } catch (Exception e) {
       println("Invalid air pollutant table or data");
       pollutants = 8;
+      pollutFail = true;
     }
     particles = new Particle[pollutants];
     for (int i = 0; i < particles.length; i++) {
@@ -93,9 +102,11 @@ class Floor {
     try {
       Table humTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=HUMA", "csv");
       hum = humTable.getFloat(humTable.getRowCount()-1, 1);
+      humFail = false;
     } catch (Exception e) {
       println("Invalid humidity table or data");
       hum = 70;
+      humFail = true;
     }
     // setup popup
     updatePopup();
@@ -107,9 +118,27 @@ class Floor {
     pu.stroke(66);
     pu.strokeWeight(1);
     pu.rect(0, 0, pu.width-1, pu.height-1, 5);
-    pu.fill(0);
+    pu.fill(254);
+    pu.textAlign(LEFT);
+    pu.text("* indicates the sensor was not reporting data at this\ntime. A standardised value is being displayed instead.", 10, 125);
+    if (pu.height != 150) {
+      pu.text("** due to the sensor layout and data availability, the\ndata for this floor is being sourced from an adjacent\nfloor.", 10, pu.height-36);
+    }
+    pu.pushStyle();
+    pu.textFont(popupFont);
+    String sTemp, sHum, sPollut;
+    sTemp = "Temperature: " + nf(temp, 0, 1) + "° C";
+    if (tempFail) { sTemp += "*"; }
+    sHum = "Humidity: " + nf(hum, 0, 1) + "%";
+    if (humFail) { sHum += "*"; }
+    sPollut = "Air Pollutants: " + nf(pollut, 0, 3) + " ppm";
+    if (pollutFail) { sPollut += "*"; }
+    pu.text(sTemp, 10, 50); 
+    pu.text(sHum, 10, 75); 
+    pu.text(sPollut, 10, 100); 
     pu.textAlign(CENTER);
-    pu.text("Exact data values go here.", pu.width/2, pu.height/2); 
+    pu.text("Data Values for Floor " + floorNum, pu.width/2, 23);
+    pu.popStyle();
     pu.endDraw();
   }
 

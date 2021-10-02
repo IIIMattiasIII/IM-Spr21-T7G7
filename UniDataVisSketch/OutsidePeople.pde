@@ -1,5 +1,3 @@
-import processing.sound.*;
-
 class Person{
   int xPos;
   int yPos;
@@ -39,7 +37,6 @@ void setupPeopleTable(){
     println("No response from SightHound");
     pCount = 1;
     vol = 0.05;
-    
   }
   
 }
@@ -54,6 +51,7 @@ void startNoise(){
   }
   else{stopNoise();}
 }
+
 void stopNoise(){
   if (crowd.isPlaying()){
   crowd.stop();

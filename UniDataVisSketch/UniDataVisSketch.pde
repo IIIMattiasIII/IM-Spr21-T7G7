@@ -1,4 +1,5 @@
 import controlP5.*;
+import processing.sound.*;
 
 // Import related
 ControlP5 control; 
@@ -9,6 +10,7 @@ int leftGap = 150, floorWidth = 900, floorHeight = 70;
 // InputCluster (Data and Time)
 Button floorViewBtn, tempBtn, humBtn, pollutBtn, soundBtn;
 boolean floorViewTog = false, tempTog = true, humTog = true, pollutTog = true, soundTog = true;
+PFont popupFont;
 Button incTimeBtn, decTimeBtn, resetTimeBtn, refreshDataBtn;
 int day = day(), month = month(), year = year(), dayMod = 0;
 int[] daysInMonth = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -34,7 +36,6 @@ PFont buildingFont;
 void setup() {
   // General Setup
   size(1820, 980, P2D);
-  frameRate(60);
   smooth(8);
   surface.setTitle("Data Visualisation of UTS Building 11");
   surface.setResizable(false);
@@ -46,7 +47,8 @@ void setup() {
   inputPos.x = width-260;
   inputPos.y = height-240;
   setupInClust();
-  // Floors 
+  // Floors
+  popupFont = createFont("Gadugi", 18);
   for (int i = 0; i < 13; i++) {
     floors[i] = new Floor(i);
   }
@@ -55,13 +57,13 @@ void setup() {
   createHumidNoise();
   // Building
   building = createBuilding();
-  //Font
   buildingFont = createFont("Arial Bold", 96);
   //Weather
   weather = new Weather();
   //people counter setup
   crowd = new SoundFile(this, "crowd.wav");
   refreshPeopleData();
+  frameRate(60);
 }
 
 void draw() {
@@ -75,6 +77,13 @@ void draw() {
   //road + pavement shapes
   drawPavement();
   weather.draw();
+  //drawing people
+  for (Person p : people) {
+    if (p != null) {
+      p.drawPerson();
+    }
+  startNoise();
+  }
   // Building (bit basic - might be worth improving/texturing)
   shape(building, 0, 0);
   // Floors 
@@ -98,14 +107,6 @@ void draw() {
     textAlign(LEFT);
     textFont(buildingFont);
     text("U T S", 780, 160);
-  }
-  //drawing people
-  for (Person p : people)
-  {
-    if (p != null) {
-        p.drawPerson();
-      }
-  startNoise();
   }
   // Input Cluster
     // Shadow Boxes
