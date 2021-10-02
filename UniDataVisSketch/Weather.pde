@@ -1,88 +1,61 @@
 class Weather {
-  static final int NUM_CLOUDS = 8; 
-  static final int NUM_STARS = 20;
-  float[] x = new float[NUM_CLOUDS], y = new float[NUM_CLOUDS];
-  float[] star_x = new float[NUM_STARS], star_y = new float[NUM_STARS];
-  float sun_x, sun_y, moon_x, moon_y, star_distance = 30*30;
-  PShape cloud;
-  PShape sun;
-  PShape moon;
-  PShape star;
-  float speed = -1.0;  
-  color noon = color(135, 207, 235);
-  color night = color(#041C37);
-  float time = 0;
-  float timeOfDay = 0;
-
-
+  final int numClouds = 8; 
+  float[] cloudX = new float[numClouds], cloudY = new float[numClouds];
+  float cloudSpeed = 1; // Temp value - to be connected to data
+  final int numStars = 20;
+  float[] starX = new float[numStars], starY = new float[numStars];
+  float starDist = 900;
+  float sunX, sunY, moonX, moonY;
+  PShape cloud, sun, moon, star;
+  color dayCol = color(135, 207, 235), nightCol = color(#041C37);
+  float time, hour;
 
   Weather() {
-
     this.cloud = createCloud();
     this.sun = createSun();
     this.moon = createMoon();
     this.star = createStarD();
-    for (int i = 0; i < NUM_CLOUDS; i++) {
-
-      x[i] = random(width);
-      y[i] = random(height/2);
+    star.scale(0.4);
+    for (int i = 0; i < numClouds; i++) {
+      cloudX[i] = random(width);
+      cloudY[i] = random(height/2);
     }
-    for (int f = 0; f < NUM_STARS; f++) {
-    retry:
-      while (true) {
-        star_x[f] = random(width/1.1);
-        star_y[f] = random(height/3);
-        for (int g = 0; g < f; g++) {
-          float dist = (star_x[f]-star_x[g])*(star_x[f]-star_x[g])+ (star_y[f]-star_y[g])*(star_y[f]-star_y[g]);
-          if (dist < star_distance) {
-            continue retry;
-          }
-        }
-        break;
-      }
+    for (int i = 0; i < numStars; i++) {
+      starX[i] = random(width/1.1);
+      starY[i] = random(height/3);
+      // Removed the extra stuff here cause it was causing issues. Not sure it was needed anyway
     }
   }
 
-  void draw() { //creates the objects for the clouds
-
-
-    time = (hour()*60+minute())/720f;
-    //time = (20*60+0)/720f; 
-    timeOfDay = hour();
-    //timeOfDay = 20;
-
-
-    color sky = lerpColor(noon, night, abs(time-1));
+  void drawWeather() { //creates the objects for the clouds
+    hour = hour(); // Should really be removed entirely, but I've left it in so testing is easier
+    time = (hour*60+minute())/720f;
+    sky = lerpColor(dayCol, nightCol, abs(time-1));
     background(sky);
-
-
-    sun_x = lerp(0, width, time-0.5);
-    if (timeOfDay >=6 && timeOfDay <= 18) {
-      shape(sun, sun_x, sun_y);
+    // Below to be changed to follow an arc rather than a straight line
+    sunX = lerp(0, width, time-0.5);
+    if (hour >=6 && hour <= 18) {
+      shape(sun, sunX, sunY);
     }
-
-    moon_x = lerp(0, width, (time+1.5)%1);
-    if (timeOfDay <=6 || timeOfDay >= 18) {
-      shape(moon, moon_x, moon_y);
-
-      for (int f = 0; f < NUM_STARS; f++) {
-        shape(star, star_x[f], star_y[f]);
+    moonX = lerp(0, width, (time+1.5)%1);
+    if (hour <=6 || hour >= 18) {
+      shape(moon, moonX, moonY);
+      for (int i = 0; i < numStars; i++) {
+        shape(star, starX[i], starY[i]);
       }
     }
-
-    for (int i = 0; i < NUM_CLOUDS; i++) {
-
-      x[i] += speed;
-      if (x[i] < -cloud.getWidth()) x[i] = width;
-      shape(cloud, x[i], y[i]);
+    // See coment above
+    for (int i = 0; i < numClouds; i++) {
+      cloudX[i] -= cloudSpeed;
+      if (cloudX[i] < -cloud.getWidth()) { 
+        cloudX[i] = width+cloud.getWidth();
+      }
+      shape(cloud, cloudX[i], cloudY[i]);
     }
   }
 }
 
-
-
 PShape createCloud() {
-
   PShape clouds = createShape(GROUP);
   PShape cloud1 = createShape(ELLIPSE, 50, 25, 40, 30);
   PShape cloud2 = createShape(ELLIPSE, 0, 15, 40, 30);
@@ -97,27 +70,24 @@ PShape createCloud() {
   clouds.addChild(cloud5);
   clouds.addChild(cloud6);
   clouds.setStroke(false);
-  clouds.setFill(#FFFFFF);
+  clouds.setFill(color(222, 223, 225));
   return clouds;
 }
 
 PShape createSun() {
-
   PShape sun = createShape(GROUP);
-  PShape sun1 = createShape(ELLIPSE, 0, 40, 50, 50);
-  PShape sun2 = createShape(ELLIPSE, 0, 40, 60, 60);
-  //PShape sun2 = createShape(TRIANGLE, 60, 20, 40, 0, 40, 20);
+  fill(255, 165, 0);
+  PShape sun1 = createShape(ELLIPSE, 0, 0, 120, 120);
+  fill(255, 165, 0, 127); // opacity will likely need adjusting
+  PShape sun2 = createShape(ELLIPSE, 0, 0, 130, 130);
   sun.addChild(sun1);
   sun.addChild(sun2);
-  sun.setFill(#ffa500);
   sun.setStroke(false);
   return sun;
 }
 
 PShape createMoon() {
-
-
-  PShape moon = createShape(ELLIPSE, 0, 40, 20, 20);
+  PShape moon = createShape(ELLIPSE, 0, 0, 110, 110);
   moon.setFill(#FFFFFF);
   moon.setStroke(false);
   return moon;
@@ -129,7 +99,7 @@ PShape createStarD() {
   star.stroke(255, 150);
   star.strokeJoin(MITER);
   star.strokeWeight(2);
-  star.fill(255, 255, 146);
+  star.fill(254);
   star.vertex(0, -15);
   star.bezierVertex(3, -3, 3, -3, 15, 0);
   star.bezierVertex(3, 3, 3, 3, 0, 15);
@@ -137,4 +107,29 @@ PShape createStarD() {
   star.bezierVertex(-3, -3, -3, -3, 0, -15);
   star.endShape(CLOSE);
   return star;
+}
+
+class Drop {
+  float  rainX = random(width), 
+    rainY = random(-200, -100), 
+    rainZ = random(0, 20), 
+    rainSpeed = map(rainZ, 0, 20, 4, 20), 
+    len = map(rainZ, 0, 20, 10, 20);
+
+  void fall() {
+    rainY = rainY + rainSpeed;
+    rainSpeed += 0.05;  
+    if (rainY > height) {
+      rainY = random(-200, -100);
+      rainSpeed = map(rainZ, 0, 20, 4, 20);
+    }
+  }
+
+  void show() {
+    float thick = map(rainZ, 0, 20, 1, 2);
+    strokeWeight(thick);
+    stroke(133, 188, 252);
+    line(rainX, rainY, rainX, rainY+len);
+    stroke(0);
+  }
 }

@@ -7,7 +7,6 @@ ControlP5 control;
 Floor[] floors = new Floor[17];
 PGraphics humNoiseG;
 int leftGap = 150, floorWidth = 900, floorHeight = 70;
-
 // InputCluster (Data and Time)
 Button floorViewBtn, tempBtn, humBtn, pollutBtn, soundBtn;
 boolean floorViewTog = false, tempTog = true, humTog = true, pollutTog = true, soundTog = true;
@@ -20,22 +19,17 @@ boolean lockout = false;
 PVector inputPos = new PVector();
 PFont btnFont, dayModBtnFont;
 color btnCol = color(52, 53, 54), btnTogCol = color(38, 102, 102), btnDisableCol = color(52, 53, 54, 160);
-
 //Sensor array
 String[] sensors = {"ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_04_415_7BD1", "ES_B_04_415_7BD1", "ES_B_05_416_7C15", "ES_B_06_418_7BED", "ES_B_07_420_7E1D", "ES_B_08_422_7BDC", "ES_B_09_425_3E8D", "ES_B_09_425_3E8D", "ES_B_11_428_3EA4", "ES_B_12_431_7BC2"};
 // Weather
 Weather weather;
-
+Drop[] drops = new Drop[200];
 color sky;
 // People
 ArrayList<Person> people = new ArrayList<Person>();
 int pCount;
 float vol;
 SoundFile crowd;
-
-Drop[] drops = new Drop[200];
-
-
 // Other
 PShape building;
 PFont buildingFont;
@@ -70,15 +64,12 @@ void setup() {
   createKey();
   //Weather
   weather = new Weather();
-
-  //people counter setup
-  crowd = new SoundFile(this, "crowd.wav");
-  refreshPeopleData();
-
   for (int i = 0; i < drops.length; i++) {
     drops[i] = new Drop();
   }
-
+  //people counter setup
+  crowd = new SoundFile(this, "crowd.wav");
+  refreshPeopleData();
   frameRate(60);
 }
 
@@ -95,24 +86,24 @@ void createKey() {
   pk.text("The colour of the floors represents their temperature. Their opacity represents the humidity.", 100, 126);
   pk.text("The figures represent the people count. Each figure represents one person that the camera\nin the sensor can see. This people count also affects the ambient noise volume.", 100, 172);
   pk.text("Externally, the cloud speed represents the local windspeed and the day-night cycle is locally accurate.", 45, 230);
-    // Particle
+  // Particle
   pk.stroke(0);
   pk.strokeWeight(2);
-  pk.fill(79,70,53);
+  pk.fill(79, 70, 53);
   pk.ellipse(65, 70, 20, 20);
-    // Floor Representation
+  // Floor Representation
   pk.strokeWeight(0.9);
   pk.beginShape();
-  pk.fill(255,0,0);
+  pk.fill(255, 0, 0);
   pk.vertex(45, 100);
   pk.fill(255);
   pk.vertex(85, 100);
-  pk.fill(0,0,255);
+  pk.fill(0, 0, 255);
   pk.vertex(85, 140);
   pk.fill(255);
   pk.vertex(45, 140);
   pk.endShape(CLOSE);
-    // Person
+  // Person
   PShape p = createPerson(255);
   p.scale(0.42);
   pk.shape(p, 65, 155); 
@@ -121,7 +112,7 @@ void createKey() {
 
 void draw() {
   // Sky
-  weather.draw();
+  weather.drawWeather();
   // Ground
   strokeWeight(2);
   fill(77, 71, 66);
@@ -129,7 +120,6 @@ void draw() {
   quad(leftGap+floorWidth, height-(2*floorHeight), leftGap+floorWidth, height, width, height, width, height-(2.3*floorHeight));
   //road + pavement shapes
   drawPavement();
-
   //drawing people
   for (Person p : people) {
     if (p != null) {
@@ -137,18 +127,14 @@ void draw() {
     }
   }
   startNoise();
-  // Building (bit basic - might be worth improving/texturing)
-  shape(building, 0, 0);
-
-  //rain WILL REFACTOR LATER
-  //commenting rain function out for now until data table is loaded
-    float rainPercent = 0.2; // PLS ADD
-    for (int i = 0; i < floor(drops.length*constrain(rainPercent, 0, 1)); i++) {
+  // Rain
+  float rainPercent = 0.2; // To be connected to EIF data
+  for (int i = 0; i < floor(drops.length*constrain(rainPercent, 0, 1)); i++) {
     drops[i].fall();
     drops[i].show();
   }
-  
-
+  // Building
+  shape(building, 0, 0);
   // Floors 
   if (floorViewTog) {
     if (humTog) { 
@@ -180,7 +166,7 @@ void draw() {
   strokeWeight(1);
   rect(inputPos.x-5, inputPos.y+125, 260, 110, 5);
   rect(inputPos.x-5, inputPos.y-5, 260, 130, 5);
-    // Display Date Text and Box
+  // Display Date Text and Box
   fill(btnCol);
   noStroke();
   rect(inputPos.x+75, inputPos.y, 100, 50);
