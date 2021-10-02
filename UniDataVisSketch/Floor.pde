@@ -120,12 +120,13 @@ class Floor {
     pu.rect(0, 0, pu.width-1, pu.height-1, 5);
     pu.fill(254);
     pu.textAlign(LEFT);
+    pu.textFont(popupFont);
+    pu.textSize(12);
+    pu.textLeading(14);
     pu.text("* indicates the sensor was not reporting data at this\ntime. A standardised value is being displayed instead.", 10, 125);
     if (pu.height != 150) {
       pu.text("** due to the sensor layout and data availability, the\ndata for this floor is being sourced from an adjacent\nfloor.", 10, pu.height-36);
     }
-    pu.pushStyle();
-    pu.textFont(popupFont);
     String sTemp, sHum, sPollut;
     sTemp = "Temperature: " + nf(temp, 0, 1) + "° C";
     if (tempFail) { sTemp += "*"; }
@@ -133,12 +134,13 @@ class Floor {
     if (humFail) { sHum += "*"; }
     sPollut = "Air Pollutants: " + nf(pollut, 0, 3) + " ppm";
     if (pollutFail) { sPollut += "*"; }
+    pu.textSize(18);
     pu.text(sTemp, 10, 50); 
     pu.text(sHum, 10, 75); 
     pu.text(sPollut, 10, 100); 
     pu.textAlign(CENTER);
+    pu.textSize(20);
     pu.text("Data Values for Floor " + floorNum, pu.width/2, 23);
-    pu.popStyle();
     pu.endDraw();
   }
 
