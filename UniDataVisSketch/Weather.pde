@@ -3,14 +3,14 @@ class Weather {
   static final int NUM_STARS = 20;
   float[] x = new float[NUM_CLOUDS], y = new float[NUM_CLOUDS];
   float[] star_x = new float[NUM_STARS], star_y = new float[NUM_STARS];
-  float sun_x, sun_y, moon_x, moon_y;
+  float sun_x, sun_y, moon_x, moon_y, star_distance = 30*30;
   PShape cloud;
   PShape sun;
   PShape moon;
   PShape star;
   float speed = -1.0;  
   color noon = color(135, 207, 235);
-  color night = color(15, 44, 64);
+  color night = color(#041C37);
   float time = 0;
   float timeOfDay = 0;
 
@@ -26,10 +26,19 @@ class Weather {
 
       x[i] = random(width);
       y[i] = random(height/2);
-
-      for (int f = 0; f < NUM_STARS; f++) {
-        star_x[f] = random(width);
-        star_y[f] = random(height/2);
+    }
+    for (int f = 0; f < NUM_STARS; f++) {
+    retry:
+      while (true) {
+        star_x[f] = random(width/1.1);
+        star_y[f] = random(height/3);
+        for (int g = 0; g < f; g++) {
+          float dist = (star_x[f]-star_x[g])*(star_x[f]-star_x[g])+ (star_y[f]-star_y[g])*(star_y[f]-star_y[g]);
+          if (dist < star_distance) {
+            continue retry;
+          }
+        }
+        break;
       }
     }
   }
@@ -37,10 +46,10 @@ class Weather {
   void draw() { //creates the objects for the clouds
 
 
-    time = (hour()*60+minute())/720f;
-    //time = (20*60+0)/720f; 
-    timeOfDay = hour();
-    //timeOfDay = 20;
+    //time = (hour()*60+minute())/720f;
+    time = (20*60+0)/720f; 
+    //timeOfDay = hour();
+    timeOfDay = 20;
 
 
     color sky = lerpColor(noon, night, abs(time-1));
