@@ -61,7 +61,7 @@ class Weather {
     for (Cloud c : cloudsOffScreen) {
       if (c != null) {
         clouds.remove(c);
-        int posX = (windDirMod==1) ? int(random(-300, -30)) : width+int(random(30, 300));
+        int posX = (windDirMod==1) ? int(random(-370, -100)) : width+int(random(30, 300));
         clouds.add(new Cloud(posX));
       }
     }
