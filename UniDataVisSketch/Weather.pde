@@ -1,7 +1,8 @@
 class Weather {
-  final int numClouds = 8; 
-  float[] cloudX = new float[numClouds], cloudY = new float[numClouds];
-  float wind, windDirMod;
+  int numClouds = 16; 
+  ArrayList<Cloud> clouds = new ArrayList<Cloud>(), cloudsOffScreen = new ArrayList<Cloud>();
+  float wind;
+  int windDirMod;
   final int numStars = 20;
   float[] starX = new float[numStars], starY = new float[numStars];
   float starDist = 900;
@@ -20,10 +21,6 @@ class Weather {
     this.star = createStarD();
     star.scale(0.4);
     setupWeatherData();
-    for (int i = 0; i < numClouds; i++) {
-      cloudX[i] = random(width);
-      cloudY[i] = random(height/2);
-    }
     for (int i = 0; i < numStars; i++) {
       starX[i] = random(width/1.1);
       starY[i] = random(height/3);
@@ -31,6 +28,9 @@ class Weather {
     }
     for (int i = 0; i < drops.length; i++) {
       drops[i] = new Drop();
+    }
+    while (clouds.size() < numClouds) {
+      clouds.add(new Cloud());
     }
   }
 
@@ -52,19 +52,20 @@ class Weather {
         shape(star, starX[i], starY[i]);
       }
     }
-    for (int i = 0; i < numClouds; i++) {
-      cloudX[i] += wind/2*windDirMod;
-      if (windDirMod == -1) {
-        if (cloudX[i] < -cloud.getWidth()) { 
-          cloudX[i] = width+cloud.getWidth();
-        }
-      } else {
-        if (cloudX[i] > width+cloud.getWidth()) { 
-          cloudX[i] = -cloud.getWidth();
-        }
+    for (Cloud c : clouds) {
+      if (c != null) {
+        c.update();
+        c.draw();
       }
-      shape(cloud, cloudX[i], cloudY[i]);
     }
+    for (Cloud c : cloudsOffScreen) {
+      if (c != null) {
+        clouds.remove(c);
+        int posX = (windDirMod==1) ? int(random(-300, -30)) : width+int(random(30, 300));
+        clouds.add(new Cloud(posX));
+      }
+    }
+    cloudsOffScreen.clear();
   }
 
   void drawRain() {
@@ -190,5 +191,42 @@ class Drop {
     stroke(133, 188, 252);
     line(rainX, rainY, rainX, rainY+len);
     stroke(0);
+  }
+}
+
+class Cloud {
+  float cloudX, cloudY;
+  PShape cloudShape;
+  
+  Cloud() {
+    cloudX = random(width);
+    cloudY = random(height/1.9);
+    cloudShape = createCloud();
+    cloudShape.scale(random(0.7, 1.3), random(0.8, 1.2));
+  }
+  
+  Cloud(int posX) {
+    cloudX = posX;
+    cloudY = random(height/1.9);
+    cloudShape = createCloud();
+    cloudShape.scale(random(0.8, 1.2), random(0.8, 1.2));
+    cloudShape.scale(random(0.9, 1.5));
+  }
+  
+  void update() {
+    cloudX += weather.wind/2*weather.windDirMod;
+    if (weather.windDirMod == -1) {
+      if (cloudX < -cloudShape.getWidth()) { 
+        weather.cloudsOffScreen.add(this);
+      }
+    } else {
+      if (cloudX > width+cloudShape.getWidth()) { 
+        weather.cloudsOffScreen.add(this);
+      }
+    }
+  }
+  
+  void draw() {
+    shape(cloudShape, cloudX, cloudY);
   }
 }
