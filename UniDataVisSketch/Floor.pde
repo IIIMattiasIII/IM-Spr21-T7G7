@@ -51,7 +51,6 @@ class Floor {
     pg.beginDraw();
     pg.clear();
     floorTemp();
-    floorLight();
     if (pollutTog) {
       for (Particle p : particles) {
         p.update();
@@ -59,6 +58,7 @@ class Floor {
       }
     }
     floorOverlay();
+    floorLight();
     pg.endDraw();
   }
 
@@ -188,17 +188,32 @@ class Floor {
   //LIGHTS START
   void floorLight(){
   if (lights){
-       //draw light on floor
-       pg.fill(255);
-       pg.rect(117,0,66,7);
-       pg.rect(417,0,66,7);
-       pg.rect(717,0,66,7);
+       pg.noStroke();
+       pg.fill(255,253,230);
+       pg.rect(117,1,66,7);
+       for (int i = 1; i <= 20; i++){
+         pg.fill(255,253,230,40 - i*4);
+         pg.rect(117 - (i*4)/2 ,1,66 + i*4,7 + i*4);
+       }
+       pg.fill(255,253,230);
+       pg.rect(417,1,66,7);
+       for (int i = 1; i <= 20; i++){
+         pg.fill(255,253,230,50 - i*5);
+         pg.rect(417 - (i*4)/2 ,1,66 + i*4,7 + i*4);
+       }
+       pg.fill(255,253,230);
+       pg.rect(717,1,66,7);
+       for (int i = 1; i <= 20; i++){
+         pg.fill(255,253,230,50 - i*5);
+         pg.rect(717 - (i*4)/2 ,1,66 + i*4,7 + i*4);
+       }
+       pg.strokeWeight(1);
    }
    else{
-     pg.fill(0);
-       pg.rect(117,0,66,7);
-       pg.rect(417,0,66,7);
-       pg.rect(717,0,66,7);
+     pg.fill(62,62,62);
+       pg.rect(117,1,66,7);
+       pg.rect(417,1,66,7);
+       pg.rect(717,1,66,7);
    }
   }
   //LIGHTS END
