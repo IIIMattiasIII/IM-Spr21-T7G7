@@ -23,8 +23,6 @@ color btnCol = color(52, 53, 54), btnTogCol = color(38, 102, 102), btnDisableCol
 String[] sensors = {"ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_01_411_7E39", "ES_B_04_415_7BD1", "ES_B_04_415_7BD1", "ES_B_05_416_7C15", "ES_B_06_418_7BED", "ES_B_07_420_7E1D", "ES_B_08_422_7BDC", "ES_B_09_425_3E8D", "ES_B_09_425_3E8D", "ES_B_11_428_3EA4", "ES_B_12_431_7BC2"};
 // Weather
 Weather weather;
-Drop[] drops = new Drop[200];
-color sky;
 // People
 ArrayList<Person> people = new ArrayList<Person>();
 int pCount;
@@ -65,9 +63,6 @@ void setup() {
   createKey();
   //Weather
   weather = new Weather();
-  for (int i = 0; i < drops.length; i++) {
-    drops[i] = new Drop();
-  }
   //people counter setup
   crowd = new SoundFile(this, "crowd.wav");
   refreshPeopleData();
@@ -129,10 +124,8 @@ void draw() {
   }
   startNoise();
   // Rain
-  float rainPercent = 0.2; // To be connected to EIF data
-  for (int i = 0; i < floor(drops.length*constrain(rainPercent, 0, 1)); i++) {
-    drops[i].fall();
-    drops[i].show();
+  if (weather.raining) {
+    weather.drawRain();
   }
   // Building
   shape(building, 0, 0);
@@ -167,7 +160,7 @@ void draw() {
   strokeWeight(1);
   rect(inputPos.x-5, inputPos.y+125, 260, 110, 5);
   rect(inputPos.x-5, inputPos.y-5, 260, 130, 5);
-  // Display Date Text and Box
+    // Display Date Text and Box
   fill(btnCol);
   noStroke();
   rect(inputPos.x+75, inputPos.y, 100, 50);

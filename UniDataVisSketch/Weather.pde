@@ -1,14 +1,17 @@
 class Weather {
   final int numClouds = 8; 
   float[] cloudX = new float[numClouds], cloudY = new float[numClouds];
-  float cloudSpeed = 1; // Temp value - to be connected to data
+  float wind, windDirMod;
   final int numStars = 20;
   float[] starX = new float[numStars], starY = new float[numStars];
   float starDist = 900;
   float sunX, sunY, moonX, moonY, sunTheta, moonTheta;
   PShape cloud, sun, moon, star;
-  color dayCol = color(135, 207, 235), nightCol = color(#041C37);
+  color dayCol = color(135, 207, 235), nightCol = color(#041C37), sky;
   int timeMins, hour;
+  Drop[] drops = new Drop[200];
+  float rain = 0.2;
+  boolean raining;
 
   Weather() {
     this.cloud = createCloud();
@@ -16,6 +19,7 @@ class Weather {
     this.moon = createMoon();
     this.star = createStarD();
     star.scale(0.4);
+    setupWeatherData();
     for (int i = 0; i < numClouds; i++) {
       cloudX[i] = random(width);
       cloudY[i] = random(height/2);
@@ -24,6 +28,9 @@ class Weather {
       starX[i] = random(width/1.1);
       starY[i] = random(height/3);
       // Removed the extra stuff here cause it was causing issues. Not sure it was needed anyway
+    }
+    for (int i = 0; i < drops.length; i++) {
+      drops[i] = new Drop();
     }
   }
 
@@ -40,17 +47,69 @@ class Weather {
     moonX = int(990*cos(moonTheta))+width/2;
     moonY = int(990*sin(moonTheta))+height+100;
     shape(moon, moonX, moonY);
-    if (hour <=6 || hour >= 18) {
+    if (timeMins < 330 || timeMins > 1110) {
       for (int i = 0; i < numStars; i++) {
         shape(star, starX[i], starY[i]);
       }
     }
     for (int i = 0; i < numClouds; i++) {
-      cloudX[i] -= cloudSpeed;
-      if (cloudX[i] < -cloud.getWidth()) { 
-        cloudX[i] = width+cloud.getWidth();
+      cloudX[i] += wind/2*windDirMod;
+      if (windDirMod == -1) {
+        if (cloudX[i] < -cloud.getWidth()) { 
+          cloudX[i] = width+cloud.getWidth();
+        }
+      } else {
+        if (cloudX[i] > width+cloud.getWidth()) { 
+          cloudX[i] = -cloud.getWidth();
+        }
       }
       shape(cloud, cloudX[i], cloudY[i]);
+    }
+  }
+
+  void drawRain() {
+    for (int i = 0; i < floor(drops.length*constrain(rain, 0, 1)); i++) {
+      drops[i].fall();
+      drops[i].show();
+    }
+  }
+
+  void setupWeatherData() {
+    try {
+      Table windTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=weather&rSensor=IWS", "csv");
+      wind = windTable.getFloat(windTable.getRowCount()-1, 1);
+      Table windDirTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=weather&rSensor=EW", "csv");
+      float windDir = windDirTable.getFloat(windDirTable.getRowCount()-1, 1);
+      if (windDir > 0) {
+        windDirMod = 1;
+      } else { 
+        windDirMod = -1;
+      }
+    } 
+    catch (Exception e) {
+      println("Invalid wind table or data");
+      windDirMod = -1;
+      wind = 2;
+    }
+    try {
+      Table rainTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=weather&rSensor=RT", "csv");
+      float rainCurr = rainTable.getFloat(rainTable.getRowCount()-1, 1);
+      float rainOld = rainTable.getFloat(0, 1);
+      if (rainCurr > 0) {
+        raining = true;
+        if (rainCurr == rainOld) {
+          rain = 0.1;
+        } else {
+          rain = constrain(rainCurr-rainOld, 0.1, 0.99);
+        }
+      } else { 
+        raining = false;
+      }
+    } 
+    catch (Exception e) {
+      println("Invalid rain table or data");
+      rain = 0.1;
+      raining = false;
     }
   }
 }

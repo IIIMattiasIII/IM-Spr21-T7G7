@@ -95,7 +95,7 @@ void refreshAll() {
   loading = true;
   setLockout();
   thread("refreshPeopleData");
-  //thread("refreshWeatherData"); // Commented out until weather data is inmplemented
+  thread("refreshWeatherData");
   thread("refreshFloorData");
 }
 
@@ -118,6 +118,10 @@ void refreshFloorData() {
     }
   }
   loading = false;
+}
+
+void refreshWeatherData() {
+  weather.setupWeatherData();
 }
 
 void refreshPeopleData() {
