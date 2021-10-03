@@ -9,6 +9,7 @@ class Floor {
   float pollut; // each floors pollutants ammount (ppm)
   boolean tempFail, humFail, pollutFail;
   int pollutants;
+  boolean lights;
   Particle[] particles;
   // Interaction
   boolean mouseHover = false;
@@ -50,6 +51,7 @@ class Floor {
     pg.beginDraw();
     pg.clear();
     floorTemp();
+    floorLight();
     if (pollutTog) {
       for (Particle p : particles) {
         p.update();
@@ -107,6 +109,22 @@ class Floor {
       println("Invalid humidity table or data");
       hum = 70;
       humFail = true;
+    }
+    //setup lights
+    try {
+      Table lightsTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=wasp&rSensor="+sensors[floorNum]+"&rSubSensor=LUM", "csv");
+       if (lightsTable.getFloat(lightsTable.getRowCount()-1, 1) >= 0.4){
+       lights = true;
+       //lightFail = false;
+       }
+       else{
+       lights = false;
+       //lightFail = false;
+       }
+    } catch (Exception e) {
+      println("Invalid lights table or data");
+      lights = false;
+      //lightFail = true;
     }
     // setup popup
     updatePopup();
@@ -167,6 +185,23 @@ class Floor {
     pg.rect(0, 0, floorWidth, floorHeight);
   }
   //TEMPERATURE END
+  //LIGHTS START
+  void floorLight(){
+  if (lights){
+       //draw light on floor
+       pg.fill(255);
+       pg.rect(117,0,66,7);
+       pg.rect(417,0,66,7);
+       pg.rect(717,0,66,7);
+   }
+   else{
+     pg.fill(0);
+       pg.rect(117,0,66,7);
+       pg.rect(417,0,66,7);
+       pg.rect(717,0,66,7);
+   }
+  }
+  //LIGHTS END
 } // END FLOOR CLASS
 
 
