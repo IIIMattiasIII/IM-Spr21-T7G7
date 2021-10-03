@@ -51,7 +51,7 @@ void setupPeopleTable() {
   catch(Exception e) {
     println("No response from SightHound");
     pCount = 1;
-    vol = 0.1;
+    vol = 0.05;
   }
 }
 
