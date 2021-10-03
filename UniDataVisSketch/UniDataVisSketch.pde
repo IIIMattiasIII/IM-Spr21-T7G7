@@ -59,7 +59,7 @@ void setup() {
   // Building
   building = createBuilding();
   buildingFont = createFont("Arial Bold", 96);
-  pk = createGraphics(floorWidth, 250, P2D);
+  pk = createGraphics(floorWidth, 300, P2D);
   createKey();
   //Weather
   weather = new Weather();
@@ -78,31 +78,40 @@ void createKey() {
   pk.textFont(popupFont);
   pk.textAlign(LEFT);
   pk.textLeading(23);
-  pk.text("Particles represent the air pollutants. Each particles represents approx. 0.15 ppm.", 100, 78);
-  pk.text("The colour of the floors represents their temperature. Their opacity represents the humidity.", 100, 126);
-  pk.text("The figures represent the people count. Each figure represents one person that the camera\nin the sensor can see. This people count also affects the ambient noise volume.", 100, 172);
-  pk.text("Externally, the cloud speed represents the local windspeed and the day-night cycle is locally accurate.", 45, 230);
+  pk.text("The state of the lights on each floor is estimated from the available sensor data. It may be\ninaccurate due to influence from sunlight or sensor degradation.", 100, 70);
+  pk.text("Particles represent the air pollutants. Each particles represents approx. 0.15 ppm.", 100, 128);
+  pk.text("The colour of the floors represents their temperature. Their opacity represents the humidity.", 100, 176);
+  pk.text("The figures represent the people count. Each figure represents one person that the camera\nin the sensor can see. This people count also affects the ambient noise volume.", 100, 222);
+  pk.text("Externally, the cloud speed represents the local windspeed and the day-night cycle is locally accurate.", 45, 280);
+  // Light
+  pk.noStroke();
+  pk.fill(255, 253, 230);
+  pk.rect(45, 65, 40, 7);
+  for (int i = 1; i <= 8; i++) {
+    pk.fill(255, 253, 230, 40 - i*4);
+    pk.rect(45 - (i*4)/2, 65, 40 + i*4, 7 + i*4);
+  }
   // Particle
   pk.stroke(0);
   pk.strokeWeight(2);
   pk.fill(79, 70, 53);
-  pk.ellipse(65, 70, 20, 20);
+  pk.ellipse(65, 120, 20, 20);
   // Floor Representation
   pk.strokeWeight(0.9);
   pk.beginShape();
   pk.fill(255, 0, 0);
-  pk.vertex(45, 100);
+  pk.vertex(45, 150);
   pk.fill(255);
-  pk.vertex(85, 100);
+  pk.vertex(85, 150);
   pk.fill(0, 0, 255);
-  pk.vertex(85, 140);
+  pk.vertex(85, 190);
   pk.fill(255);
-  pk.vertex(45, 140);
+  pk.vertex(45, 190);
   pk.endShape(CLOSE);
   // Person
   PShape p = createPerson(255);
   p.scale(0.42);
-  pk.shape(p, 65, 155); 
+  pk.shape(p, 65, 205); 
   pk.endDraw();
 }
 
@@ -151,16 +160,16 @@ void draw() {
     textFont(buildingFont);
     text("U T S", leftGap+630, 160);
     // Key
-    image(pk, leftGap, height-250);
+    image(pk, leftGap, height-pk.height);
   }
   // Input Cluster
-    // Shadow Boxes
+  // Shadow Boxes
   fill(255, 100);
   stroke(195);
   strokeWeight(1);
   rect(inputPos.x-5, inputPos.y+125, 260, 110, 5);
   rect(inputPos.x-5, inputPos.y-5, 260, 130, 5);
-    // Display Date Text and Box
+  // Display Date Text and Box
   fill(btnCol);
   noStroke();
   rect(inputPos.x+75, inputPos.y, 100, 50);
@@ -177,7 +186,7 @@ void draw() {
     dayDisplay+=dayMod+" days ago";
   }
   text(dayDisplay, inputPos.x+125, inputPos.y+20);
-    // Triangles/arrows for inc and dec buttons
+  // Triangles/arrows for inc and dec buttons
   if (lockout) {
     fill(btnDisableCol);
   } else if (decTimeBtn.isPressed()) { 
@@ -198,15 +207,14 @@ void draw() {
   fill(255);
   text("-", inputPos.x+40, inputPos.y+49);
   text("+", inputPos.x+210, inputPos.y+49);
-    // Draw control buttons - autoDraw disabled in setup to allow loading to be displayed on top
+  // Draw control buttons - autoDraw disabled in setup to allow loading to be displayed on top
   control.draw();
-    // Button lockout and loading
+  // Button lockout and loading
   if (loading) {
     displayLoading();
   } else {
     checkLockoutTimer(); // moved here in case loading is taking longer than normal - will remain locked out this way
   }
-    
 }
 
 void checkFloorHover(Floor f) {
