@@ -163,13 +163,13 @@ void draw() {
     image(pk, leftGap, height-pk.height);
   }
   // Input Cluster
-  // Shadow Boxes
+    // Shadow Boxes
   fill(255, 100);
   stroke(195);
   strokeWeight(1);
   rect(inputPos.x-5, inputPos.y+125, 260, 110, 5);
   rect(inputPos.x-5, inputPos.y-5, 260, 130, 5);
-  // Display Date Text and Box
+    // Display Date Text and Box
   fill(btnCol);
   noStroke();
   rect(inputPos.x+75, inputPos.y, 100, 50);
@@ -186,7 +186,7 @@ void draw() {
     dayDisplay+=dayMod+" days ago";
   }
   text(dayDisplay, inputPos.x+125, inputPos.y+20);
-  // Triangles/arrows for inc and dec buttons
+    // Triangles/arrows for inc and dec buttons
   if (lockout) {
     fill(btnDisableCol);
   } else if (decTimeBtn.isPressed()) { 
@@ -207,13 +207,13 @@ void draw() {
   fill(255);
   text("-", inputPos.x+40, inputPos.y+49);
   text("+", inputPos.x+210, inputPos.y+49);
-  // Draw control buttons - autoDraw disabled in setup to allow loading to be displayed on top
+    // Draw control buttons - autoDraw disabled in setup to allow loading to be displayed on top
   control.draw();
-  // Button lockout and loading
+    // Button lockout and loading
   if (loading) {
     displayLoading();
   } else {
-    checkLockoutTimer(); // moved here in case loading is taking longer than normal - will remain locked out this way
+    checkLockoutTimer();
   }
 }
 
@@ -230,7 +230,6 @@ void checkFloorHover(Floor f) {
 }
 
 void mouseClicked() {
-  println("Clicked: " + mouseX + ", " + mouseY); // Used during testing. To be removed before final build release
   if (mouseX < inputPos.x || mouseY < inputPos.y) {
     for (Floor f : floors) {
       if (f != null) {

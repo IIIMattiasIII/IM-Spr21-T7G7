@@ -143,7 +143,7 @@ class Floor {
     pu.textLeading(14);
     pu.text("* indicates the sensor was not reporting data at this\ntime. A standardised value is being displayed instead.", 10, 125);
     if (pu.height != 150) {
-      pu.text("** due to the sensor layout and data availability, the\ndata for this floor is being sourced from an adjacent\nfloor.", 10, pu.height-36);
+      pu.text("Due to the sensor layout and data availability, the\ndata for this floor is being sourced from an adjacent\nfloor.", 10, pu.height-36);
     }
     String sTemp, sHum, sPollut;
     sTemp = "Temperature: " + nf(temp, 0, 1) + "° C";
@@ -185,6 +185,7 @@ class Floor {
     pg.rect(0, 0, floorWidth, floorHeight);
   }
   //TEMPERATURE END
+  
   //LIGHTS START
   void floorLight(){
   if (lights){
@@ -218,7 +219,6 @@ class Floor {
   }
   //LIGHTS END
 } // END FLOOR CLASS
-
 
 //HUMIDITY START
 void createHumidNoise() {

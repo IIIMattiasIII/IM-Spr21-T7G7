@@ -24,7 +24,6 @@ class Weather {
     for (int i = 0; i < numStars; i++) {
       starX[i] = random(width/1.1);
       starY[i] = random(height/3);
-      // Removed the extra stuff here cause it was causing issues. Not sure it was needed anyway
     }
     for (int i = 0; i < drops.length; i++) {
       drops[i] = new Drop();
@@ -34,7 +33,7 @@ class Weather {
     }
   }
 
-  void drawWeather() { //creates the objects for the clouds
+  void drawWeather() {
     hour = hour(); // Should really be removed entirely, but I've left it in so testing is easier
     timeMins = hour*60+minute();
     sky = lerpColor(dayCol, nightCol, abs((timeMins/720f)-1));
@@ -78,7 +77,7 @@ class Weather {
   void setupWeatherData() {
     try {
       Table windTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=weather&rSensor=IWS", "csv");
-      wind = windTable.getFloat(windTable.getRowCount()-1, 1);
+      wind = constrain(windTable.getFloat(windTable.getRowCount()-1, 1), 0, 20);
       Table windDirTable = loadTable("https://eif-research.feit.uts.edu.au/api/dl/?rFromDate="+getPrevTime()+"&rToDate="+getCurrTime()+"&rFamily=weather&rSensor=EW", "csv");
       float windDir = windDirTable.getFloat(windDirTable.getRowCount()-1, 1);
       if (windDir > 0) {
@@ -214,7 +213,7 @@ class Cloud {
   }
   
   void update() {
-    cloudX += weather.wind/2*weather.windDirMod;
+    cloudX += weather.wind/4*weather.windDirMod;
     if (weather.windDirMod == -1) {
       if (cloudX < -cloudShape.getWidth()) { 
         weather.cloudsOffScreen.add(this);

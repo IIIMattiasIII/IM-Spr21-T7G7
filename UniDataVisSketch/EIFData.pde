@@ -58,7 +58,6 @@ String getDate() {
   return year+"-"+month+"-"+day;
 }
 
-// Feel like there's a better way to do this... This functions and it's the best I could think of for now though, so it'll do.
 // There's not really any protection for the year changes, so I don't think this will work for years far from now, but 
 //  the EIF Data probably won't be there anyway, so I'm not going to over-engineer it 
 void modTime(int t) {
@@ -86,8 +85,6 @@ void modTime(int t) {
     } else {
       day++;
     }
-  } else {
-    println("Invalid modTime parameter."); // Can probably delete this part. Used during testing
   }
 }
 
@@ -131,7 +128,7 @@ void refreshPeopleData() {
     people.add(new Person());
   }
   if (crowd.isPlaying()){
-  crowd.stop();
+    crowd.stop();
   }
   startNoise();
 }
