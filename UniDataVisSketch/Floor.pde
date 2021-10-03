@@ -191,19 +191,19 @@ class Floor {
        pg.noStroke();
        pg.fill(255,253,230);
        pg.rect(117,1,66,7);
-       for (int i = 1; i <= 20; i++){
+       for (int i = 1; i <= 8; i++){
          pg.fill(255,253,230,40 - i*4);
          pg.rect(117 - (i*4)/2 ,1,66 + i*4,7 + i*4);
        }
        pg.fill(255,253,230);
        pg.rect(417,1,66,7);
-       for (int i = 1; i <= 20; i++){
+       for (int i = 1; i <= 8; i++){
          pg.fill(255,253,230,50 - i*5);
          pg.rect(417 - (i*4)/2 ,1,66 + i*4,7 + i*4);
        }
        pg.fill(255,253,230);
        pg.rect(717,1,66,7);
-       for (int i = 1; i <= 20; i++){
+       for (int i = 1; i <= 8; i++){
          pg.fill(255,253,230,50 - i*5);
          pg.rect(717 - (i*4)/2 ,1,66 + i*4,7 + i*4);
        }
